@@ -16,7 +16,7 @@
     >
 
     <title>Flor & Renda</title>
- 
+
     <link rel="stylesheet" href="style.css">
 
 </head>
@@ -30,23 +30,16 @@
 <header class="cabecalho">
 
     <div class="logo">
-
         <h2>Flor & Renda</h2>
-
     </div>
 
     <nav class="menu">
 
-        <a href="#inicio">Início</a>
-
+        <a href="#inicio" class="ativo">Início</a>
         <a href="#vestidos">Vestidos</a>
-
         <a href="#saias">Saias</a>
-
         <a href="#promocoes">Promoções</a>
-
-        <a href="#sobre">Sobre</a>
-
+        <a href="#sobre">Sobre Nós</a>
         <a href="#contato">Contato</a>
 
     </nav>
@@ -79,12 +72,9 @@
             Favoritos
         </button>
 
-        <a
-            href="#carrinho"
-            class="carrinho"
-        >
-            Carrinho
-        </a>
+        <a href="carrinho.html" class="carrinho">
+    Carrinho
+</a>
 
     </div>
 
@@ -93,15 +83,25 @@
 
 <main>
 
-    <!-- BANNER -->
+
+<!-- =================================
+     BANNER
+================================== -->
 
 <section id="inicio">
 
     <div class="banner">
 
-        <img src="logo.jpeg" class="logoBanner" alt="Flor & Renda">
+        <img
+            src="logo.jpeg"
+            class="logoBanner"
+            alt="Flor & Renda"
+        >
 
-        <button onclick="document.getElementById('vestidos').scrollIntoView({behavior:'smooth'})">
+        <button
+            type="button"
+            onclick="document.getElementById('vestidos').scrollIntoView({behavior:'smooth'})"
+        >
             Comprar Agora
         </button>
 
@@ -109,341 +109,901 @@
 
 </section>
 
-    <!-- =================================
-         CATEGORIAS
-    ================================== -->
 
-    <section id="categorias">
+<!-- =================================
+     CATEGORIAS
+================================== -->
 
-        <div class="titulo">
+<section id="categorias">
 
-            <h1>Categorias</h1>
+    <div class="titulo">
+
+        <h1>Categorias</h1>
+
+        <p>
+            Escolha seu estilo favorito.
+        </p>
+
+    </div>
+
+
+    <div class="cards">
+
+        <!-- VESTIDOS -->
+
+        <div class="produto">
+
+            <img
+                src="vestidoll.jpg"
+                alt="Categoria de vestidos"
+            >
+
+            <h2>Vestidos</h2>
 
             <p>
-                Escolha seu estilo favorito.
+                Modelos curtos e longos para todas as ocasiões.
             </p>
+
+            <button
+                type="button"
+                onclick="document.getElementById('vestidos').scrollIntoView({behavior:'smooth'})"
+            >
+                Ver Vestidos
+            </button>
 
         </div>
 
-        <div class="cards">
 
-            <div class="produto">
+        <!-- SAIAS -->
 
-                <img
-                    src="vestino azul.jpg"
-                    alt="Categoria de vestidos"
-                >
+        <div class="produto">
 
-                <h2>Vestidos</h2>
+            <img
+                src="saia azul.jpeg"
+                alt="Categoria de saias"
+            >
 
-                <p>
-                    Modelos curtos e longos para todas as ocasiões.
-                </p>
+            <h2>Saias</h2>
 
-                <button
-                    type="button"
-                    onclick="document.getElementById('vestidos').scrollIntoView()"
-                >
+            <p>
+                Saias florais, modernas e cheias de personalidade.
+            </p>
+
+            <button
+                type="button"
+                onclick="document.getElementById('saias').scrollIntoView({behavior:'smooth'})"
+            >
+                Ver Saias
+            </button>
+
+        </div>
+
+
+        <!-- FLORAIS -->
+
+        <div class="produto">
+
+            <img
+                src="vestido flor.webp"
+                alt="Coleção floral"
+            >
+
+            <h2>Florais</h2>
+
+            <p>
+                Peças coloridas inspiradas nas flores brasileiras.
+            </p>
+
+            <button
+                type="button"
+                onclick="document.getElementById('vestidos').scrollIntoView({behavior:'smooth'})"
+            >
+                Ver Coleção
+            </button>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- =================================
+     VESTIDOS
+================================== -->
+
+<section id="vestidos">
+
+    <div class="titulo">
+
+        <h1>Vestidos</h1>
+
+        <p>
+            Modelos leves, delicados e elegantes.
+        </p>
+
+    </div>
+
+
+    <div class="cards">
+
+
+        <!-- VESTIDO 1 -->
+
+        <div class="produto">
+
+            <img
+                src="vestidocurto1.jpg"
+                alt="Vestido Curto Floral"
+            >
+
+            <h2>Vestido Curto Floral</h2>
+
+            <p>
+                Vestido curto com estampa floral,
+                alças finas e modelagem delicada.
+            </p>
+
+            <h3>R$ 159,90</h3>
+
+            <button
+                type="button"
+                onclick="adicionarCarrinho('Vestido Curto Floral', 159.90)"
+            >
+                Adicionar ao Carrinho
+            </button>
+
+            <button
+                type="button"
+                onclick="adicionarFavorito('Vestido Curto Floral')"
+            >
+                Favorito
+            </button>
+
+        </div>
+
+
+        <!-- VESTIDO 2 -->
+
+        <div class="produto">
+
+            <img
+                src="vestidolongofarm.webp"
+                alt="Vestido Longo Floral"
+            >
+
+            <h2>Vestido Longo Floral</h2>
+
+            <p>
+                Vestido longo floral com modelagem
+                leve e elegante.
+            </p>
+
+            <h3>R$ 189,90</h3>
+
+            <button
+                type="button"
+                onclick="adicionarCarrinho('Vestido Longo Floral', 189.90)"
+            >
+                Adicionar ao Carrinho
+            </button>
+
+            <button
+                type="button"
+                onclick="adicionarFavorito('Vestido Longo Floral')"
+            >
+                Favorito
+            </button>
+
+        </div>
+
+
+        <!-- VESTIDO 3 -->
+
+        <div class="produto">
+
+            <img
+                src="amarelo flor.webp"
+                alt="Vestido Longo Azul"
+            >
+
+            <h2>Vestido Longo Azul</h2>
+
+            <p>
+                Modelo longo azul com caimento leve,
+                elegante e confortável.
+            </p>
+
+            <h3>R$ 259,90</h3>
+
+            <button
+                type="button"
+                onclick="adicionarCarrinho('Vestido Longo Azul', 259.90)"
+            >
+                Adicionar ao Carrinho
+            </button>
+
+            <button
+                type="button"
+                onclick="adicionarFavorito('Vestido Longo Azul')"
+            >
+                Favorito
+            </button>
+
+        </div>
+
+
+        <!-- VESTIDO 4 -->
+
+        <div class="produto">
+
+            <img
+                src="branco flor.webp"
+                alt="Vestido Longo Elegante"
+            >
+
+            <h2>Vestido Longo Elegante</h2>
+
+            <p>
+                Modelo longo sofisticado para deixar
+                o look ainda mais especial.
+            </p>
+
+            <h3>R$ 239,90</h3>
+
+            <button
+                type="button"
+                onclick="adicionarCarrinho('Vestido Longo Elegante', 239.90)"
+            >
+                Adicionar ao Carrinho
+            </button>
+
+            <button
+                type="button"
+                onclick="adicionarFavorito('Vestido Longo Elegante')"
+            >
+                Favorito
+            </button>
+
+        </div>
+
+
+        <!-- VESTIDO 5 -->
+
+        <div class="produto">
+
+            <img
+                src="vestido verde.webp"
+                alt="Vestido Longo Tropical"
+            >
+
+            <h2>Vestido Longo Tropical</h2>
+
+            <p>
+                Vestido longo com estampa tropical,
+                cores vibrantes e modelagem leve.
+            </p>
+
+            <h3>R$ 249,90</h3>
+
+            <button
+                type="button"
+                onclick="adicionarCarrinho('Vestido Longo Tropical', 249.90)"
+            >
+                Adicionar ao Carrinho
+            </button>
+
+            <button
+                type="button"
+                onclick="adicionarFavorito('Vestido Longo Tropical')"
+            >
+                Favorito
+            </button>
+
+        </div>
+
+
+        <!-- VESTIDO 6 -->
+
+        <div class="produto">
+
+            <img
+                src="vestido flor.webp"
+                alt="Vestido Floral Azul"
+            >
+
+            <h2>Vestido Floral Azul</h2>
+
+            <p>
+                Vestido longo azul com estampa floral,
+                elegante e cheio de personalidade.
+            </p>
+
+            <h3>R$ 269,90</h3>
+
+            <button
+                type="button"
+                onclick="adicionarCarrinho('Vestido Floral Azul', 269.90)"
+            >
+                Adicionar ao Carrinho
+            </button>
+
+            <button
+                type="button"
+                onclick="adicionarFavorito('Vestido Floral Azul')"
+            >
+                Favorito
+            </button>
+
+        </div>
+
+
+        <!-- VESTIDO 7 NOVO -->
+
+        <div class="produto">
+
+            <img
+                src="vestidofloralverde.jpg"
+                alt="Vestido Curto Floral Verde"
+            >
+
+            <h2>Vestido Curto Floral Verde</h2>
+
+            <p>
+                Vestido curto com estampa floral delicada,
+                leve e perfeito para dias ensolarados.
+            </p>
+
+            <h3>R$ 199,90</h3>
+
+            <button
+                type="button"
+                onclick="adicionarCarrinho('Vestido Curto Floral Verde', 199.90)"
+            >
+                Adicionar ao Carrinho
+            </button>
+
+            <button
+                type="button"
+                onclick="adicionarFavorito('Vestido Curto Floral Verde')"
+            >
+                Favorito
+            </button>
+
+        </div>
+
+
+        <!-- VESTIDO 8 NOVO -->
+
+        <div class="produto">
+
+            <img
+                src="images.jpg"
+                alt="Vestido Curto Floral Claro"
+            >
+
+            <h2>Vestido Curto Floral Claro</h2>
+
+            <p>
+                Modelo curto com estampa floral suave,
+                delicado e confortável.
+            </p>
+
+            <h3>R$ 219,90</h3>
+
+            <button
+                type="button"
+                onclick="adicionarCarrinho('Vestido Curto Floral Claro', 219.90)"
+            >
+                Adicionar ao Carrinho
+            </button>
+
+            <button
+                type="button"
+                onclick="adicionarFavorito('Vestido Curto Floral Claro')"
+            >
+                Favorito
+            </button>
+
+        </div>
+
+
+    </div>
+
+</section>
+<!-- =================================
+     NOVA COLEÇÃO
+================================== -->
+
+<section id="nova-colecao">
+
+    <div class="titulo-colecao">
+        <span>FLOR & RENDA</span>
+        <h1>Nova Coleção</h1>
+        <p>Leveza, flores e cores para os seus melhores momentos.</p>
+    </div>
+
+    <div class="colecao-imagens">
+
+        <!-- FOTO DETALHE -->
+        <div class="colecao-card">
+            <img
+                src="fff43.jpg"
+                alt="Detalhes do vestido floral"
+            >
+
+            <div class="colecao-texto">
+                <span>NOVO</span>
+                <h2>Detalhes que encantam</h2>
+            </div>
+        </div>
+
+
+        <!-- FOTO VESTIDO COMPLETO -->
+        <div class="colecao-card">
+            <img
+                src="flortt.webp"
+                alt="Vestido floral amarelo"
+            >
+
+            <div class="colecao-texto">
+                <span>NOVA COLEÇÃO</span>
+                <h2>Flores da Estação</h2>
+
+                <a href="vestidos.html">
                     Ver Vestidos
-                </button>
-
+                </a>
             </div>
+        </div>
 
-            <div class="produto">
+    </div>
 
-                <img
-                    src="saia azul.jpeg"
-                    alt="Categoria de saias"
-                >
+</section>
 
-                <h2>Saias</h2>
 
-                <p>
-                    Saias florais, modernas e cheias de personalidade.
-                </p>
+<!-- =================================
+     SAIAS
+================================== -->
 
-                <button
-                    type="button"
-                    onclick="document.getElementById('saias').scrollIntoView()"
-                >
+<section id="saias">
+
+    <div class="titulo">
+
+        <h1>Saias</h1>
+
+        <p>
+            Estampas florais e modelos modernos.
+        </p>
+
+    </div>
+
+
+    <div class="cards">
+
+
+        <!-- SAIA 1 -->
+
+        <div class="produto">
+
+            <img
+                src="saia.jpg"
+                alt="Saia Floral Rosa"
+            >
+
+            <h2>Saia Floral Rosa</h2>
+
+            <p>
+                Saia curta com estampa colorida,
+                ajuste lateral e visual moderno.
+            </p>
+
+            <h3>R$ 129,90</h3>
+
+            <button
+                type="button"
+                onclick="adicionarCarrinho('Saia Floral Rosa', 129.90)"
+            >
+                Adicionar ao Carrinho
+            </button>
+
+            <button
+                type="button"
+                onclick="adicionarFavorito('Saia Floral Rosa')"
+            >
+                Favorito
+            </button>
+
+        </div>
+
+
+
+        <!-- SAIA 2 -->
+
+        <div class="produto">
+
+            <img
+                src="saia.1.webp"
+                alt="Saia Floral Clara"
+            >
+
+            <h2>Saia Floral Clara</h2>
+
+            <p>
+                Saia curta transpassada com detalhes florais
+                e acabamento delicado.
+            </p>
+
+            <h3>R$ 139,90</h3>
+
+            <button
+                type="button"
+                onclick="adicionarCarrinho('Saia Floral Clara', 139.90)"
+            >
+                Adicionar ao Carrinho
+            </button>
+
+            <button
+                type="button"
+                onclick="adicionarFavorito('Saia Floral Clara')"
+            >
+                Favorito
+            </button>
+
+        </div>
+
+
+        <!-- SAIA 3 -->
+
+        <div class="produto">
+
+            <img
+                src="saia azul.jpeg"
+                alt="Saia Azul"
+            >
+
+            <h2>Saia Azul</h2>
+
+            <p>
+                Modelo azul moderno e confortável,
+                ideal para criar looks leves.
+            </p>
+
+            <h3>R$ 149,90</h3>
+
+            <button
+                type="button"
+                onclick="adicionarCarrinho('Saia Azul', 149.90)"
+            >
+                Adicionar ao Carrinho
+            </button>
+
+            <button
+                type="button"
+                onclick="adicionarFavorito('Saia Azul')"
+            >
+                Favorito
+            </button>
+
+        </div>
+
+
+        <!-- SAIA 4 -->
+
+        <div class="produto">
+
+            <img
+                src="saia preta.webp"
+                alt="Saia Preta"
+            >
+
+            <h2>Saia Preta</h2>
+
+            <p>
+                Modelo versátil e elegante para combinar
+                com diferentes estilos.
+            </p>
+
+            <h3>R$ 159,90</h3>
+
+            <button
+                type="button"
+                onclick="adicionarCarrinho('Saia Preta', 159.90)"
+            >
+                Adicionar ao Carrinho
+            </button>
+
+            <button
+                type="button"
+                onclick="adicionarFavorito('Saia Preta')"
+            >
+                Favorito
+            </button>
+
+        </div>
+
+
+        <!-- SAIA 5 -->
+
+        <div class="produto">
+
+            <img
+                src="saialirio.webp"
+                alt="Saia Lírio Colorida"
+            >
+
+            <h2>Saia Tropical Clara</h2>
+
+            <p>
+                Saia curta com estampa tropical,
+                moderna e confortável.
+            </p>
+
+            <h3>R$ 149,90</h3>
+
+            <button
+                type="button"
+                onclick="adicionarCarrinho('Saia Tropical Clara', 149.90)"
+            >
+                Adicionar ao Carrinho
+            </button>
+
+            <button
+                type="button"
+                onclick="adicionarFavorito('Saia Tropical Clara')"
+            >
+                Favorito
+            </button>
+
+        </div>
+
+
+        <!-- SAIA 6 -->
+
+        <div class="produto">
+
+            <img
+                src="saia1.jpg"
+                alt="Saia Floral Azul"
+            >
+
+            <h2>Saia Floral Azul</h2>
+
+            <p>
+                Saia curta azul com estampa floral,
+                delicada e cheia de personalidade.
+            </p>
+
+            <h3>R$ 159,90</h3>
+
+            <button
+                type="button"
+                onclick="adicionarCarrinho('Saia Floral Azul', 159.90)"
+            >
+                Adicionar ao Carrinho
+            </button>
+
+            <button
+                type="button"
+                onclick="adicionarFavorito('Saia Floral Azul')"
+            >
+                Favorito
+            </button>
+
+        </div>
+
+
+        <!-- SAIA 7 NOVA -->
+
+        <div class="produto">
+
+            <img
+                src="346535_52692_1-SAIA-CURTA-BALONE-MOLETOM-TROPICALZINHO.webp"
+                alt="Saia Tropical Colorida"
+            >
+
+            <h2>Saia Tropical Colorida</h2>
+
+            <p>
+                Saia curta com estampa tropical,
+                cores vibrantes e modelagem confortável.
+            </p>
+
+            <h3>R$ 159,90</h3>
+
+            <button
+                type="button"
+                onclick="adicionarCarrinho('Saia Tropical Colorida', 159.90)"
+            >
+                Adicionar ao Carrinho
+            </button>
+
+            <button
+                type="button"
+                onclick="adicionarFavorito('Saia Tropical Colorida')"
+            >
+                Favorito
+            </button>
+
+        </div>
+
+
+        <!-- SAIA 8 NOVA -->
+
+        <div class="produto">
+
+            <img
+                src="saiafloral2.webp"
+                alt="Saia Floral Michelle"
+            >
+
+            <h2>Saia Floral Michelle</h2>
+
+            <p>
+                Saia curta floral com tons quentes,
+                moderna e cheia de personalidade.
+            </p>
+
+            <h3>R$ 169,90</h3>
+
+            <button
+                type="button"
+                onclick="adicionarCarrinho('Saia Floral Michelle', 169.90)"
+            >
+                Adicionar ao Carrinho
+            </button>
+
+            <button
+                type="button"
+                onclick="adicionarFavorito('Saia Floral Michelle')"
+            >
+                Favorito
+            </button>
+
+        </div>
+
+
+    </div>
+
+</section>
+<!-- =================================
+     NOVA COLEÇÃO
+================================== -->
+<section id="nova-colecao">
+
+    <div class="titulo-colecao">
+
+        <h1>Nova Coleção de Saias</h1>
+
+        <p>
+            Leveza, flores e cores para os seus melhores momentos.
+        </p>
+
+    </div>
+
+
+    <div class="colecao-imagens">
+
+        <!-- PRIMEIRA SAIA -->
+
+        <div class="colecao-card">
+
+            <img
+                src="saia flor amarela.jpg"
+                alt="Saia Floral Tropical"
+            >
+
+            <div class="colecao-texto">
+
+                <span>NOVA COLEÇÃO</span>
+
+                <h2>Saia Floral Tropical</h2>
+
+                <a href="#saias">
                     Ver Saias
-                </button>
+                </a>
 
             </div>
 
         </div>
 
-    </section>
+
+        <!-- SEGUNDA SAIA -->
+
+        <div class="colecao-card">
+
+            <img
+                src="floreste.jpg"
+                alt="Saia Longa Floral Amarela"
+            >
+
+            <div class="colecao-texto">
+
+                <span>NOVA COLEÇÃO</span>
+
+                <h2>Saia Longa Floral Amarela</h2>
+
+                <a href="#saias">
+                    Ver Saias
+                </a>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
 
 
-    <!-- =================================
-         VESTIDOS
-    ================================== -->
 
-    <section id="vestidos">
 
-        <div class="titulo">
+<!-- =================================
+     PROMOÇÕES
+================================== -->
 
-            <h1>Vestidos</h1>
+<section id="promocoes">
+
+    <div class="titulo">
+
+        <h1>Promoções</h1>
+
+        <p>
+            Aproveite nossas ofertas especiais.
+        </p>
+
+    </div>
+
+
+    <div class="cards">
+
+        <div class="produto">
+
+            <h2>Vestidos</h2>
 
             <p>
-                Modelos leves, delicados e elegantes.
+                Modelos selecionados com até 30% de desconto.
             </p>
 
         </div>
 
-        <div class="cards">
 
-            <!-- VESTIDO 1 -->
+        <div class="produto">
 
-            <div class="produto">
-
-                <img
-                    src="vestidocurto1.jpg"
-                    alt="Vestido curto floral"
-                >
-
-                <h2>Vestido Curto Floral</h2>
-
-                <p>
-                    Vestido curto com estampa floral,
-                    alças finas e modelagem delicada.
-                </p>
-
-                <h3>R$ 159,90</h3>
-
-                <button
-                    type="button"
-                    onclick="adicionarCarrinho(
-                        'Vestido Curto Floral',
-                        159.90
-                    )"
-                >
-                    Adicionar ao Carrinho
-                </button>
-
-                <button
-                    type="button"
-                    onclick="adicionarFavorito(
-                        'Vestido Curto Floral'
-                    )"
-                >
-                    Favorito
-                </button>
-
-            </div>
-
-
-            <!-- VESTIDO 2 -->
-
-            <div class="produto">
-
-                <img
-                    src="vestidolongofarm.webp"
-                    alt="Vestido longo floral"
-                >
-
-                <h2>Vestido Longo Floral</h2>
-
-                <p>
-                    Vestido longo em tom verde-claro,
-                    com pequenas flores coloridas.
-                </p>
-
-                <h3>R$ 189,90</h3>
-
-                <button
-                    type="button"
-                    onclick="adicionarCarrinho(
-                        'Vestido Longo Floral',
-                        189.90
-                    )"
-                >
-                    Adicionar ao Carrinho
-                </button>
-
-                <button
-                    type="button"
-                    onclick="adicionarFavorito(
-                        'Vestido Longo Floral'
-                    )"
-                >
-                    Favorito
-                </button>
-
-            </div>
-
-        </div>
-
-    </section>
-
-
-    <!-- =================================
-         SAIAS
-    ================================== -->
-
-    <section id="saias">
-
-        <div class="titulo">
-
-            <h1>Saias</h1>
+            <h2>Saias</h2>
 
             <p>
-                Estampas florais e modelos modernos.
+                Saias selecionadas a partir de R$ 99,90.
             </p>
 
         </div>
 
-        <div class="cards">
 
-            <!-- SAIA 1 -->
+        <div class="produto">
 
-            <div class="produto">
-
-                <img
-                    src="saia.jpg"
-                    alt="Saia curta estampada"
-                >
-
-                <h2>Saia Floral Rosa</h2>
-
-                <p>
-                    Saia curta com estampa colorida,
-                    ajuste lateral e visual moderno.
-                </p>
-
-                <h3>R$ 129,90</h3>
-
-                <button
-                    type="button"
-                    onclick="adicionarCarrinho(
-                        'Saia Floral Rosa',
-                        129.90
-                    )"
-                >
-                    Adicionar ao Carrinho
-                </button>
-
-                <button
-                    type="button"
-                    onclick="adicionarFavorito(
-                        'Saia Floral Rosa'
-                    )"
-                >
-                    Favorito
-                </button>
-
-            </div>
-
-
-            <!-- SAIA 2 -->
-
-            <div class="produto">
-
-                <img
-                    src="saia.1.webp"
-                    alt="Saia branca"
-                >
-
-                <h2>Saia Floral Clara</h2>
-
-                <p>
-                    Saia curta transpassada com detalhes florais
-                    e acabamento delicado.
-                </p>
-
-                <h3>R$ 139,90</h3>
-
-                <button
-                    type="button"
-                    onclick="adicionarCarrinho(
-                        'Saia Floral Clara',
-                        139.90
-                    )"
-                >
-                    Adicionar ao Carrinho
-                </button>
-
-                <button
-                    type="button"
-                    onclick="adicionarFavorito(
-                        'Saia Floral Clara'
-                    )"
-                >
-                    Favorito
-                </button>
-
-            </div>
-
-        </div>
-
-    </section>
-
-
-    <!-- =================================
-         PROMOÇÕES
-    ================================== -->
-
-    <section id="promocoes">
-
-        <div class="titulo">
-
-            <h1>Promoções</h1>
+            <h2>Frete Grátis</h2>
 
             <p>
-                Aproveite nossas ofertas especiais.
+                Em compras acima de R$ 199,90.
             </p>
 
         </div>
 
-        <div class="cards">
+    </div>
 
-            <div class="produto">
-
-                <h2>Vestidos</h2>
-
-                <p>
-                    Modelos selecionados com até 30% de desconto.
-                </p>
-
-            </div>
-
-            <div class="produto">
-
-                <h2>Saias</h2>
-
-                <p>
-                    Saias selecionadas a partir de R$ 99,90.
-                </p>
-
-            </div>
-
-            <div class="produto">
-
-                <h2>Frete Grátis</h2>
-
-                <p>
-                    Em compras acima de R$ 199,90.
-                </p>
-
-            </div>
-
-        </div>
-
-    </section>
+</section>
 
 
-    <!-- =================================
-         SOBRE
-    ================================== -->
+<!-- =================================
+     SOBRE
+================================== -->
 
-    <section id="sobre">
+<section id="sobre">
 
-        <div class="titulo">
+    <div class="titulo">
+        <h1>Sobre a Flor & Renda</h1>
+    </div>
 
-            <h1>Sobre a Flor & Renda</h1>
-
-        </div>
+    <div class="sobre-texto">
 
         <p>
             A Flor & Renda nasceu em Barretos com o objetivo
@@ -457,321 +1017,214 @@
             que gostam de peças leves e cheias de personalidade.
         </p>
 
-    </section>
+    </div>
+
+</section>
 
 
-    <!-- =================================
-         CONTATO
-    ================================== -->
+<!-- =================================
+     TROCAS E DEVOLUÇÕES
+================================== -->
 
-    <section id="contato">
+<section id="trocas">
 
-        <div class="titulo">
+    <div class="titulo">
+        <h1>Trocas e Devoluções</h1>
+    </div>
 
-            <h1>Contato</h1>
+    <div class="sobre-texto">
 
-            <p>
-                Entre em contato com nossa loja.
-            </p>
-
-        </div>
-
-        <p>
-            <strong>E-mail:</strong>
-            contato@florerenda.com
-        </p>
+        <h2>Como funcionam as trocas?</h2>
 
         <p>
-            <strong>Telefone:</strong>
-            (17) 99999-9999
+            Caso seja necessário realizar uma troca,
+            entre em contato com nossa equipe informando
+            o produto e o motivo da solicitação.
         </p>
+
+
+        <h2>Condições para troca</h2>
 
         <p>
-            <strong>Localização:</strong>
-            Barretos - SP
+            A peça deve estar sem sinais de uso,
+            em boas condições e com as etiquetas originais.
         </p>
 
-        <h2>Redes Sociais</h2>
 
-        <p>Instagram</p>
-
-    </section>
-
-
-    <!-- =================================
-         LOCALIZAÇÃO
-    ================================== -->
-
-    <section id="localizacao">
-
-        <div class="titulo">
-
-            <h1>Onde Estamos?</h1>
-
-            <p>
-                Nossa loja está localizada em Barretos.
-            </p>
-
-        </div>
+        <h2>Devoluções</h2>
 
         <p>
-            Barretos - São Paulo
+            Para solicitar uma devolução, entre em contato
+            com nossa equipe para receber as orientações necessárias.
         </p>
 
-        <iframe
-            src="https://www.google.com/maps?q=Barretos,SP&output=embed"
-            width="100%"
-            height="350"
-            style="border:0; border-radius:10px;"
-            loading="lazy"
-            title="Mapa de Barretos">
-        </iframe>
+    </div>
 
-    </section>
+</section>
 
+<!-- =================================
+     POLÍTICA DE PRIVACIDADE
+================================== -->
 
-    <!-- =================================
-         CARRINHO
-    ================================== -->
+<section id="privacidade">
 
-    <section id="carrinho">
+    <div class="titulo">
 
-        <div class="titulo">
+        <h1>Política de Privacidade</h1>
 
-            <h1>Meu Carrinho</h1>
+        <p>
+            Sua privacidade e seus dados são importantes
+            para a Flor & Renda.
+        </p>
 
-            <p>
-                Confira os produtos adicionados.
-            </p>
+    </div>
 
-        </div>
+    <div class="sobre-texto">
 
-        <table id="tabelaCarrinho">
+        <h2>Uso das informações</h2>
 
-            <tr>
+        <p>
+            Os dados fornecidos durante a compra são utilizados
+            para atendimento, pagamento e entrega dos pedidos.
+        </p>
 
-                <th>Produto</th>
+        <h2>Proteção dos dados</h2>
 
-                <th>Preço</th>
+        <p>
+            Buscamos manter suas informações protegidas
+            e utilizá-las de forma responsável.
+        </p>
 
-                <th>Quantidade</th>
+        <h2>Contato</h2>
 
-                <th>Total</th>
+        <p>
+            Em caso de dúvidas sobre seus dados,
+            entre em contato com a Flor & Renda.
+        </p>
 
-                <th>Remover</th>
+    </div>
 
-            </tr>
+</section>
 
-        </table>
 
-        <h2 id="totalCompra">
+<!-- =================================
+     CONTATO
+================================== -->
 
-            Total: R$ 0,00
+<section id="contato">
 
-        </h2>
+    <div class="titulo">
 
-    </section>
+        <h1>Contato</h1>
 
+        <p>
+            Entre em contato com nossa loja.
+        </p>
 
-    <!-- =================================
-         CHECKOUT
-    ================================== -->
+    </div>
 
-    <section id="checkout">
+    <p>
+        <strong>E-mail:</strong>
+        contato@florerenda.com
+    </p>
 
-        <div class="titulo">
+    <p>
+        <strong>Telefone:</strong>
+        (17) 99999-9999
+    </p>
 
-            <h1>Finalizar Compra</h1>
+    <p>
+        <strong>Localização:</strong>
+        Barretos - SP
+    </p>
 
-            <p>
-                Preencha seus dados para concluir o pedido.
-            </p>
+    <h2>Redes Sociais</h2>
 
-        </div>
+    <p>Instagram</p>
 
-        <form id="formCompra">
+</section>
 
-            <h2>Dados do Cliente</h2>
+<!-- =================================
+     LOCALIZAÇÃO
+================================== -->
 
-            <input
-                type="text"
-                name="nome"
-                placeholder="Nome completo"
-                required
-            >
+<section id="localizacao">
 
-            <input
-                type="email"
-                name="email"
-                placeholder="E-mail"
-                required
-            >
+    <div class="titulo">
 
-            <input
-                type="tel"
-                name="telefone"
-                placeholder="Telefone"
-                required
-            >
+        <h1>Onde Estamos?</h1>
 
-            <input
-                type="text"
-                name="cpf"
-                placeholder="CPF"
-                required
-            >
+        <p>
+            Nossa loja está localizada em Barretos.
+        </p>
 
+    </div>
 
-            <h2>Endereço de Entrega</h2>
+    <p>
+        Barretos - São Paulo
+    </p>
 
-            <input
-                type="text"
-                name="cep"
-                placeholder="CEP"
-                required
-            >
+    <iframe
+        src="https://www.google.com/maps?q=Barretos,SP&output=embed"
+        width="100%"
+        height="350"
+        style="border:0; border-radius:10px;"
+        loading="lazy"
+        title="Mapa de Barretos">
+    </iframe>
 
-            <input
-                type="text"
-                name="rua"
-                placeholder="Rua"
-                required
-            >
+</section>
 
-            <input
-                type="text"
-                name="numero"
-                placeholder="Número"
-                required
-            >
 
-            <input
-                type="text"
-                name="complemento"
-                placeholder="Complemento"
-            >
 
-            <input
-                type="text"
-                name="bairro"
-                placeholder="Bairro"
-                required
-            >
+<!-- =================================
+     NEWSLETTER
+================================== -->
 
-            <input
-                type="text"
-                name="cidade"
-                placeholder="Cidade"
-                value="Barretos"
-                required
-            >
+<section id="newsletter">
 
-            <input
-                type="text"
-                name="estado"
-                placeholder="Estado"
-                value="SP"
-                required
-            >
+    <div class="titulo">
 
+        <h1>Receba nossas novidades</h1>
 
-            <h2>Forma de Pagamento</h2>
+        <p>
+            Cadastre seu e-mail para receber
+            lançamentos e promoções.
+        </p>
 
-            <label>
+    </div>
 
-                <input
-                    type="radio"
-                    name="pagamento"
-                    value="Pix"
-                    required
-                >
 
-                PIX
+    <form>
 
-            </label>
+        <input
+            type="email"
+            placeholder="Digite seu e-mail"
+            required
+        >
 
-            <label>
+        <button type="submit">
+            Cadastrar
+        </button>
 
-                <input
-                    type="radio"
-                    name="pagamento"
-                    value="Cartão de Crédito"
-                >
+    </form>
 
-                Cartão de Crédito
+</section>
 
-            </label>
-
-            <label>
-
-                <input
-                    type="radio"
-                    name="pagamento"
-                    value="Boleto Bancário"
-                >
-
-                Boleto Bancário
-
-            </label>
-
-            <button type="submit">
-
-                Finalizar Compra
-
-            </button>
-
-        </form>
-
-    </section>
-
-
-    <!-- =================================
-         NEWSLETTER
-    ================================== -->
-
-    <section id="newsletter">
-
-        <div class="titulo">
-
-            <h1>Receba nossas novidades</h1>
-
-            <p>
-                Cadastre seu e-mail para receber
-                lançamentos e promoções.
-            </p>
-
-        </div>
-
-        <form>
-
-            <input
-                type="email"
-                placeholder="Digite seu e-mail"
-                required
-            >
-
-            <button type="submit">
-
-                Cadastrar
-
-            </button>
-
-        </form>
-
-    </section>
 
 </main>
-
-
 <!-- =================================
      RODAPÉ
 ================================== -->
 
 <footer>
 
-    <div class="rodape">
+    <section class="rodape-container">
 
-        <div>
+
+        <!-- FLOR & RENDA -->
+
+        <section class="rodape-coluna">
 
             <h2>Flor & Renda</h2>
 
@@ -780,67 +1233,120 @@
                 e nas cores da mulher brasileira.
             </p>
 
-        </div>
+        </section>
 
-        <div>
+
+        <!-- PRODUTOS -->
+
+        <section class="rodape-coluna">
 
             <h3>Produtos</h3>
 
-            <p>Vestidos</p>
+            <ul>
 
-            <p>Saias</p>
+                <li>
+                    <a href="vestidos.html">
+                        Vestidos
+                    </a>
+                </li>
 
-            <p>Promoções</p>
+                <li>
+                    <a href="saias.html">
+                        Saias
+                    </a>
+                </li>
 
-        </div>
+                <li>
+                    <a href="promocoes.html">
+                        Promoções
+                    </a>
+                </li>
 
-        <div>
+            </ul>
+
+        </section>
+
+
+        <!-- INSTITUCIONAL -->
+
+        <section class="rodape-coluna">
 
             <h3>Institucional</h3>
 
-            <p>Sobre Nós</p>
+            <ul>
 
-            <p>Trocas e Devoluções</p>
+                <li>
+                    <a href="#sobre">
+                        Sobre Nós
+                    </a>
+                </li>
 
-            <p>Política de Privacidade</p>
+                <li>
+                    <a href="#trocas">
+                        Trocas e Devoluções
+                    </a>
+                </li>
 
-        </div>
+                <li>
+                    <a href="#privacidade">
+                        Política de Privacidade
+                    </a>
+                </li>
 
-        <div>
+            </ul>
+
+        </section>
+
+
+        <!-- CONTATO -->
+
+        <section class="rodape-coluna">
 
             <h3>Contato</h3>
 
-            <p>(17) 99999-9999</p>
+            <ul>
 
-            <p>contato@florerenda.com</p>
+                <li>
+                    <a href="tel:+5517999999999">
+                        (17) 99999-9999
+                    </a>
+                </li>
 
-            <p>Barretos - SP</p>
+                <li>
+           <p>
+    <a href="https://outlook.office.com/mail/deeplink/compose?to=contato@florerenda.com"
+       target="_blank">
+        contato@florerenda.com
+    </a>
+</p>
+                </li>
 
-        </div>
+                <li>
+                    <a href="#contato">
+                        Barretos - SP
+                    </a>
+                </li>
 
-    </div>
+            </ul>
 
-    <hr>
+        </section>
 
-    <p class="copyright">
-
-        © 2026 Flor & Renda -
-        Todos os direitos reservados.
-
-    </p>
+    </section>
 
 </footer>
 
 
-<!-- =================================
-     ARQUIVOS JAVASCRIPT
-================================== -->
-
 <script src="script.js"></script>
 
-<script src="pesquisa.js"></script>
+</body>
 
-<script src="favoritos.js"></script>
+</html>
+
+
+
+               
+
+<script src="script.js"></script>
 
 </body>
 

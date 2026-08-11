@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>Finalizar Compra | Flor & Renda</title>
+
+    <link rel="stylesheet" href="style.css">
+
+</head>
+
+<body>
+
+
+<header class="cabecalho">
+
+    <div class="logo">
+        <h2>Flor & Renda</h2>
+    </div>
+
+    <nav class="menu">
+
+        <a href="index.html">
+            Início
+        </a>
+
+        <a href="index.html#vestidos">
+            Vestidos
+        </a>
+
+        <a href="index.html#saias">
+            Saias
+        </a>
+
+        <a href="carrinho.html">
+            Voltar ao Carrinho
+        </a>
+
+    </nav>
+
+</header>
+
+
+
+<main>
+
+
+<section id="checkout">
+
+    <div class="titulo">
+
+        <h1>Finalizar Compra</h1>
+
+        <p>
+            Preencha seus dados para concluir seu pedido.
+        </p>
+
+    </div>
+
+
+    <form id="formCompra">
+
+
+        <!-- DADOS -->
+
+        <h2>Dados do Cliente</h2>
+
+        <input
+            type="text"
+            name="nome"
+            placeholder="Nome completo"
+            required
+        >
+
+        <input
+            type="email"
+            name="email"
+            placeholder="E-mail"
+            required
+        >
+
+        <input
+            type="tel"
+            name="telefone"
+            placeholder="Telefone"
+            required
+        >
+
+        <input
+            type="text"
+            name="cpf"
+            placeholder="CPF"
+            required
+        >
+
+
+        <!-- ENDEREÇO -->
+
+        <h2>Endereço de Entrega</h2>
+
+        <input
+            type="text"
+            name="cep"
+            placeholder="CEP"
+            required
+        >
+
+        <input
+            type="text"
+            name="rua"
+            placeholder="Rua"
+            required
+        >
+
+        <input
+            type="text"
+            name="numero"
+            placeholder="Número"
+            required
+        >
+
+        <input
+            type="text"
+            name="complemento"
+            placeholder="Complemento"
+        >
+
+        <input
+            type="text"
+            name="bairro"
+            placeholder="Bairro"
+            required
+        >
+
+        <input
+            type="text"
+            name="cidade"
+            placeholder="Cidade"
+            required
+        >
+
+        <input
+            type="text"
+            name="estado"
+            placeholder="Estado"
+            required
+        >
+
+
+        <!-- PAGAMENTO -->
+
+        <h2>Forma de Pagamento</h2>
+
+
+        <label>
+
+            <input
+                type="radio"
+                name="pagamento"
+                value="Pix"
+                required
+            >
+
+            PIX
+
+        </label>
+
+
+        <label>
+
+            <input
+                type="radio"
+                name="pagamento"
+                value="Cartão de Crédito"
+            >
+
+            Cartão de Crédito
+
+        </label>
+
+
+        <label>
+
+            <input
+                type="radio"
+                name="pagamento"
+                value="Boleto Bancário"
+            >
+
+            Boleto Bancário
+
+        </label>
+
+
+        <button type="submit">
+            Confirmar Pedido
+        </button>
+
+
+    </form>
+
+</section>
+
+
+</main>
+
+
+<script src="script.js"></script>
+
+</body>
+
+</html>
