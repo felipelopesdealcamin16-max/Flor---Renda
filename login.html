@@ -21,10 +21,17 @@
         <section class="login-apresentacao">
 
             <div class="login-logo">
-                <img src="logo.jpeg" alt="Logo Flor & Renda">
+
+                <img
+                    src="logo.jpeg"
+                    alt="Logo Flor & Renda"
+                >
+
             </div>
 
-            <h1>Flor & Renda</h1>
+            <h1>
+                Flor & Renda
+            </h1>
 
             <p>
                 Vista seus momentos com delicadeza,
@@ -37,41 +44,61 @@
         <!-- LADO DO LOGIN -->
         <section class="login-caixa">
 
-            <h2>Bem-vindo!</h2>
+            <h2>
+                Bem-vindo!
+            </h2>
 
             <p class="login-subtitulo">
                 Entre na sua conta para continuar.
             </p>
 
+
             <form id="formLogin">
 
-                <label for="email">E-mail</label>
+                <label for="email">
+                    E-mail
+                </label>
 
                 <input
                     type="email"
                     id="email"
+                    name="email"
                     placeholder="Digite seu e-mail"
                     required
                 >
 
-                <label for="senha">Senha</label>
+
+                <label for="senha">
+                    Senha
+                </label>
 
                 <input
                     type="password"
                     id="senha"
+                    name="senha"
                     placeholder="Digite sua senha"
                     required
                 >
 
-                <button type="submit" class="botao-login-principal">
+
+                <button
+                    type="submit"
+                    class="botao-login-principal"
+                >
                     Entrar
                 </button>
 
             </form>
 
+
             <p class="login-cadastro">
+
                 Ainda não tem uma conta?
-                <a href="cadastro.html">Criar conta</a>
+
+                <a href="cadastro.html">
+                    Criar conta
+                </a>
+
             </p>
 
         </section>
@@ -79,7 +106,72 @@
     </div>
 
 
-    <script src="login.js"></script>
+    <script>
+
+        document
+            .getElementById("formLogin")
+            .addEventListener("submit", function(event) {
+
+                event.preventDefault();
+
+                const dados = new FormData(this);
+
+
+                fetch("backend/login.php", {
+
+                    method: "POST",
+
+                    body: dados
+
+                })
+
+                .then(function(resposta) {
+
+                    return resposta.text();
+
+                })
+
+                .then(function(resultado) {
+
+                    resultado = resultado.trim();
+
+
+                    if (resultado === "sucesso") {
+
+                        // SALVA QUE O USUÁRIO ESTÁ LOGADO
+                        localStorage.setItem(
+                            "usuarioLogado",
+                            "true"
+                        );
+
+
+                        alert(
+                            "Login realizado com sucesso!"
+                        );
+
+
+                        window.location.href = "index.html";
+
+
+                    } else {
+
+                        alert(resultado);
+
+                    }
+
+                })
+
+                .catch(function() {
+
+                    alert(
+                        "Erro ao realizar o login."
+                    );
+
+                });
+
+            });
+
+    </script>
 
 </body>
 

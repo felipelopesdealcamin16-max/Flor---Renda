@@ -50,37 +50,51 @@
                 <input
                     type="text"
                     id="nome"
+                    name="nome"
                     placeholder="Digite seu nome"
                     required
                 >
+
 
                 <label for="emailCadastro">E-mail</label>
 
                 <input
                     type="email"
                     id="emailCadastro"
+                    name="email"
                     placeholder="Digite seu e-mail"
                     required
                 >
+
 
                 <label for="senhaCadastro">Senha</label>
 
                 <input
                     type="password"
                     id="senhaCadastro"
+                    name="senha"
                     placeholder="Digite sua senha"
                     required
                 >
 
-                <button type="submit" class="botao-login-principal">
+
+                <button
+                    type="submit"
+                    class="botao-login-principal">
                     Criar conta
                 </button>
 
             </form>
 
+
             <p class="login-cadastro">
+
                 Já tem uma conta?
-                <a href="login.html">Entrar</a>
+
+                <a href="login.html">
+                    Entrar
+                </a>
+
             </p>
 
         </section>
@@ -88,7 +102,56 @@
     </div>
 
 
-    <script src="cadastro.js"></script>
+    <script>
+
+        document.getElementById("formCadastro").addEventListener("submit", function(event) {
+
+            event.preventDefault();
+
+            const formulario = this;
+
+            const dados = new FormData(formulario);
+
+
+            fetch("backend/cadastrar_usuario.php", {
+
+                method: "POST",
+
+                body: dados
+
+            })
+
+            .then(function(resposta) {
+
+                return resposta.text();
+
+            })
+
+            .then(function(resultado) {
+
+                if (resultado.trim() === "sucesso") {
+
+                    alert("Cadastro realizado com sucesso!");
+
+                    window.location.href = "login.html";
+
+                } else {
+
+                    alert(resultado);
+
+                }
+
+            })
+
+            .catch(function() {
+
+                alert("Erro ao realizar o cadastro.");
+
+            });
+
+        });
+
+    </script>
 
 </body>
 

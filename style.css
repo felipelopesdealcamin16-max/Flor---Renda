@@ -4661,4 +4661,148 @@ footer {
 
     }
 
+}  
+/* ============================= */
+/* RESPONSIVIDADE PARA CELULAR */
+/* ============================= */
+
+@media (max-width: 768px) {
+
+    body {
+        padding-top: 90px;
+    }
+
+    header {
+        height: auto;
+        padding: 15px;
+    }
+
+    nav {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 10px;
+    }
+
+    nav a {
+        font-size: 14px;
+    }
+
+    .banner {
+        width: 100%;
+        height: auto;
+    }
+
+    .banner img {
+        width: 100%;
+        height: auto;
+    }
+
+    .produtos {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 15px;
+        padding: 15px;
+    }
+
+    .produto {
+        width: 100%;
+    }
+
+    .produto img {
+        width: 100%;
+        height: auto;
+    }
+
+    .produto h3 {
+        font-size: 16px;
+    }
+
+    .produto p {
+        font-size: 14px;
+    }
+
+    button {
+        max-width: 100%;
+    }
+
+    input {
+        max-width: 100%;
+    }
+}
+
+
+/* CELULARES PEQUENOS */
+
+@media (max-width: 480px) {
+
+    .produtos {
+        grid-template-columns: 1fr;
+    }
+
+    nav {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    nav a {
+        font-size: 15px;
+    }
+
+    h1 {
+        font-size: 24px;
+    }
+
+    h2 {
+        font-size: 21px;
+    }
+
+    .produto h3 {
+        font-size: 18px;
+    }
+}
+@media (max-width: 768px) {
+
+    header {
+        height: auto;
+        padding: 15px 10px;
+    }
+
+    header .container {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 12px;
+    }
+
+    nav {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 8px;
+        width: 100%;
+    }
+
+    nav a {
+        font-size: 13px;
+    }
+
+    #campoPesquisa {
+        width: 100%;
+        max-width: 300px;
+        box-sizing: border-box;
+    }
+
+    .botoes {
+        display: flex;
+        justify-content: center;
+        flex-wrap: wrap;
+        gap: 8px;
+        width: 100%;
+    }
+
+    .botoes button,
+    .botoes a {
+        max-width: 100%;
+        box-sizing: border-box;
+    }
 }
