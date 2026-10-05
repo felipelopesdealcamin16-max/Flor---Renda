@@ -108,68 +108,62 @@
 
     <script>
 
-        document
-            .getElementById("formLogin")
-            .addEventListener("submit", function(event) {
+document.getElementById("formLogin").addEventListener("submit", function(event) {
 
-                event.preventDefault();
+    event.preventDefault();
 
-                const dados = new FormData(this);
+    const dados = new FormData(this);
 
+    fetch("backend/login.php", {
+        method: "POST",
+        body: dados
+    })
 
-                fetch("backend/login.php", {
+    .then(function(resposta) {
 
-                    method: "POST",
+        if (!resposta.ok) {
+            throw new Error("HTTP " + resposta.status);
+        }
 
-                    body: dados
+        return resposta.text();
 
-                })
+    })
 
-                .then(function(resposta) {
+    .then(function(resultado) {
 
-                    return resposta.text();
+        resultado = resultado.trim();
 
-                })
+        console.log("Resposta do PHP:", resultado);
 
-                .then(function(resultado) {
+        if (resultado === "sucesso") {
 
-                    resultado = resultado.trim();
+            localStorage.setItem("usuarioLogado", "true");
 
+            alert("Login realizado com sucesso!");
 
-                    if (resultado === "sucesso") {
+            window.location.href = "index.html";
 
-                        // SALVA QUE O USUÁRIO ESTÁ LOGADO
-                        localStorage.setItem(
-                            "usuarioLogado",
-                            "true"
-                        );
+        } else {
 
+            alert(resultado);
 
-                        alert(
-                            "Login realizado com sucesso!"
-                        );
+        }
 
+    })
 
-                        window.location.href = "index.html";
+    .catch(function(erro) {
 
+        console.error(erro);
 
-                    } else {
+        alert(
+            "Não foi possível conectar ao sistema de login.\n\n" +
+            "Verifique se o Apache e o MySQL estão ligados."
+        );
 
-                        alert(resultado);
+    });
 
-                    }
+});
 
-                })
-
-                .catch(function() {
-
-                    alert(
-                        "Erro ao realizar o login."
-                    );
-
-                });
-
-            });
 
     </script>
 

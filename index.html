@@ -5,10 +5,7 @@
 
     <meta charset="UTF-8">
 
-    <meta
-        name="viewport"
-        content="width=device-width, initial-scale=1.0"
-    >
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <meta
         name="description"
@@ -23,23 +20,76 @@
 
 <body>
 
-
 <!-- =================================
      VERIFICAÇÃO DE LOGIN
 ================================== -->
 
 <script>
 
-    const usuarioLogado =
-        localStorage.getItem("usuarioLogado");
+    const usuarioLogado = localStorage.getItem("usuarioLogado");
 
     if (usuarioLogado !== "true") {
-
         window.location.href = "login.html";
-
     }
 
 </script>
+
+
+<!-- =================================
+     MODAL DE TAMANHO
+================================== -->
+
+<div id="modalTamanho" class="modal-tamanho">
+
+    <div class="caixa-tamanho">
+
+        <button
+            type="button"
+            class="fechar-tamanho"
+            onclick="fecharTamanhos()"
+        >
+            ×
+        </button>
+
+        <h2>Escolha o tamanho</h2>
+
+        <p id="nomeProdutoTamanho"></p>
+
+        <div class="tamanhos">
+
+            <button type="button" onclick="selecionarTamanho('PP', this)">
+                PP
+            </button>
+
+            <button type="button" onclick="selecionarTamanho('P', this)">
+                P
+            </button>
+
+            <button type="button" onclick="selecionarTamanho('M', this)">
+                M
+            </button>
+
+            <button type="button" onclick="selecionarTamanho('G', this)">
+                G
+            </button>
+
+            <button type="button" onclick="selecionarTamanho('GG', this)">
+                GG
+            </button>
+
+        </div>
+
+        <button
+            type="button"
+            class="botao-confirmar-tamanho"
+            onclick="confirmarCarrinho()"
+        >
+            Adicionar ao Carrinho
+        </button>
+
+    </div>
+
+</div>
 
 
 <!-- =================================
@@ -86,47 +136,50 @@
     </nav>
 
 
-    <div class="icones">
+    <div class="pesquisa">
 
-        <div class="pesquisa">
+        <div class="area-pesquisa">
 
             <input
-                type="search"
+                type="text"
                 id="campoPesquisa"
-                placeholder="Pesquisar produtos"
-                aria-label="Pesquisar produtos"
+                placeholder="Pesquisar roupa..."
             >
 
             <button
                 type="button"
-                onclick="pesquisarProduto()"
+                id="btnPesquisar"
             >
-                Buscar
+                🔍
             </button>
 
         </div>
 
-
-        <button
-            type="button"
-            class="coracao"
-            onclick="mostrarFavoritos()"
-        >
-            Favoritos
-        </button>
-
-
-        <a
-            href="carrinho.html"
-            class="carrinho"
-        >
-            Carrinho
-        </a>
-
     </div>
+
+
+    <button
+        type="button"
+        class="coracao"
+        onclick="mostrarFavoritos()"
+    >
+        Favoritos
+    </button>
+
+
+    <a
+        href="carrinho.html"
+        class="carrinho"
+    >
+        Carrinho
+    </a>
 
 </header>
 
+
+<!-- =================================
+     CONTEÚDO
+================================== -->
 
 <main>
 
@@ -144,7 +197,6 @@
             class="logoBanner"
             alt="Flor & Renda"
         >
-
 
         <button
             type="button"
@@ -179,9 +231,6 @@
 
     <div class="lista-lojas">
 
-
-        <!-- ZARA -->
-
         <div class="loja">
 
             <a href="zara.html">
@@ -197,14 +246,10 @@
 
             </a>
 
-            <p>
-                ZARA
-            </p>
+            <p>ZARA</p>
 
         </div>
 
-
-        <!-- FARM -->
 
         <div class="loja">
 
@@ -221,14 +266,10 @@
 
             </a>
 
-            <p>
-                FARM
-            </p>
+            <p>FARM</p>
 
         </div>
 
-
-        <!-- LEVI'S -->
 
         <div class="loja">
 
@@ -245,14 +286,10 @@
 
             </a>
 
-            <p>
-                LEVI'S
-            </p>
+            <p>LEVI'S</p>
 
         </div>
 
-
-        <!-- AMARO -->
 
         <div class="loja">
 
@@ -269,14 +306,10 @@
 
             </a>
 
-            <p>
-                AMARO
-            </p>
+            <p>AMARO</p>
 
         </div>
 
-
-        <!-- SHOULDER -->
 
         <div class="loja">
 
@@ -293,12 +326,9 @@
 
             </a>
 
-            <p>
-                SHOULDER
-            </p>
+            <p>SHOULDER</p>
 
         </div>
-
 
     </div>
 
@@ -327,8 +357,6 @@
     <div class="cards">
 
 
-        <!-- VESTIDOS -->
-
         <div class="produto">
 
             <img
@@ -353,8 +381,6 @@
 
         </div>
 
-
-        <!-- SAIAS -->
 
         <div class="produto">
 
@@ -381,8 +407,6 @@
         </div>
 
 
-        <!-- FLORAIS -->
-
         <div class="produto">
 
             <img
@@ -406,7 +430,6 @@
             </button>
 
         </div>
-
 
     </div>
 
@@ -434,8 +457,6 @@
 
     <div class="cards">
 
-
-        <!-- VESTIDO 1 -->
 
         <div class="produto">
 
@@ -478,8 +499,6 @@
         </div>
 
 
-        <!-- VESTIDO 2 -->
-
         <div class="produto">
 
             <img
@@ -520,8 +539,6 @@
 
         </div>
 
-
-        <!-- VESTIDO 3 -->
 
         <div class="produto">
 
@@ -564,8 +581,6 @@
         </div>
 
 
-        <!-- VESTIDO 4 -->
-
         <div class="produto">
 
             <img
@@ -606,8 +621,6 @@
 
         </div>
 
-
-        <!-- VESTIDO 5 -->
 
         <div class="produto">
 
@@ -650,8 +663,6 @@
         </div>
 
 
-        <!-- VESTIDO 6 -->
-
         <div class="produto">
 
             <img
@@ -692,8 +703,6 @@
 
         </div>
 
-
-        <!-- VESTIDO 7 -->
 
         <div class="produto">
 
@@ -736,8 +745,6 @@
         </div>
 
 
-        <!-- VESTIDO 8 -->
-
         <div class="produto">
 
             <img
@@ -777,7 +784,6 @@
             </button>
 
         </div>
-
 
     </div>
 
@@ -848,7 +854,7 @@
                     Flores da Estação
                 </h2>
 
-                <a href="vestidos.html">
+                <a href="#vestidos">
                     Ver Vestidos
                 </a>
 
@@ -882,8 +888,6 @@
 
     <div class="cards">
 
-
-        <!-- SAIA 1 -->
 
         <div class="produto">
 
@@ -926,8 +930,6 @@
         </div>
 
 
-        <!-- SAIA 2 -->
-
         <div class="produto">
 
             <img
@@ -968,8 +970,6 @@
 
         </div>
 
-
-        <!-- SAIA 3 -->
 
         <div class="produto">
 
@@ -1012,8 +1012,6 @@
         </div>
 
 
-        <!-- SAIA 4 -->
-
         <div class="produto">
 
             <img
@@ -1055,13 +1053,11 @@
         </div>
 
 
-        <!-- SAIA 5 -->
-
         <div class="produto">
 
             <img
                 src="saialirio.webp"
-                alt="Saia Lírio Colorida"
+                alt="Saia Tropical Clara"
             >
 
             <h2>
@@ -1097,8 +1093,6 @@
 
         </div>
 
-
-        <!-- SAIA 6 -->
 
         <div class="produto">
 
@@ -1141,8 +1135,6 @@
         </div>
 
 
-        <!-- SAIA 7 -->
-
         <div class="produto">
 
             <img
@@ -1184,8 +1176,6 @@
         </div>
 
 
-        <!-- SAIA 8 -->
-
         <div class="produto">
 
             <img
@@ -1226,7 +1216,6 @@
 
         </div>
 
-
     </div>
 
 </section>
@@ -1236,7 +1225,7 @@
      NOVA COLEÇÃO DE SAIAS
 ================================== -->
 
-<section id="nova-colecao">
+<section id="nova-colecao-saias">
 
     <div class="titulo-colecao">
 
@@ -1252,7 +1241,6 @@
 
 
     <div class="colecao-imagens">
-
 
         <div class="colecao-card">
 
@@ -1304,7 +1292,6 @@
             </div>
 
         </div>
-
 
     </div>
 
@@ -1398,7 +1385,6 @@
             e confortáveis.
         </p>
 
-
         <p>
             Nossa inspiração vem das cores, estampas e da natureza
             brasileira. Trabalhamos com vestidos e saias para mulheres
@@ -1411,7 +1397,7 @@
 
 
 <!-- =================================
-     TROCAS E DEVOLUÇÕES
+     TROCAS
 ================================== -->
 
 <section id="trocas">
@@ -1463,7 +1449,7 @@
 
 
 <!-- =================================
-     POLÍTICA DE PRIVACIDADE
+     PRIVACIDADE
 ================================== -->
 
 <section id="privacidade">
@@ -1631,7 +1617,6 @@
             required
         >
 
-
         <button type="submit">
             Cadastrar
         </button>
@@ -1676,19 +1661,19 @@
             <ul>
 
                 <li>
-                    <a href="vestidos.html">
+                    <a href="#vestidos">
                         Vestidos
                     </a>
                 </li>
 
                 <li>
-                    <a href="saias.html">
+                    <a href="#saias">
                         Saias
                     </a>
                 </li>
 
                 <li>
-                    <a href="promocoes.html">
+                    <a href="#promocoes">
                         Promoções
                     </a>
                 </li>
@@ -1745,8 +1730,7 @@
 
                 <li>
                     <a
-                        href="https://outlook.office.com/mail/deeplink/compose?to=contato@florerenda.com"
-                        target="_blank"
+                        href="mailto:contato@florerenda.com"
                     >
                         contato@florerenda.com
                     </a>

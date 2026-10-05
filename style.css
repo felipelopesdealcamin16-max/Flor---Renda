@@ -4806,3 +4806,91 @@ footer {
         box-sizing: border-box;
     }
 }
+
+.area-pesquisa {
+    display: flex;
+    align-items: center;
+}
+
+#btnPesquisar {
+    background: none !important;
+    border: none !important;
+    box-shadow: none !important;
+    outline: none !important;
+    cursor: pointer;
+    padding: 0 8px;
+    margin: 0;
+    font-size: 20px;
+    color: #2D2D2D;
+}
+
+#btnPesquisar:hover,
+#btnPesquisar:focus,
+#btnPesquisar:active {
+    background: none !important;
+    border: none !important;
+    box-shadow: none !important;
+    outline: none !important;
+}
+
+.modal-tamanho {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.5);
+    justify-content: center;
+    align-items: center;
+    z-index: 9999;
+}
+
+.caixa-tamanho {
+    background: white;
+    width: 90%;
+    max-width: 400px;
+    padding: 30px;
+    border-radius: 15px;
+    text-align: center;
+    position: relative;
+}
+
+.fechar-tamanho {
+    position: absolute;
+    top: 10px;
+    right: 15px;
+    border: none;
+    background: transparent;
+    font-size: 28px;
+    cursor: pointer;
+}
+
+.tamanhos {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    margin: 20px 0;
+    flex-wrap: wrap;
+}
+
+.tamanhos button {
+    border: 1px solid #D27C67;
+    background: white;
+    color: #2D2D2D;
+    padding: 10px 16px;
+    border-radius: 8px;
+    cursor: pointer;
+}
+
+.tamanhos button.selecionado {
+    background: #D27C67;
+    color: white;
+}
+
+.botao-confirmar-tamanho {
+    width: 100%;
+    border: none;
+    background: #D27C67;
+    color: white;
+    padding: 12px;
+    border-radius: 8px;
+    cursor: pointer;
+}

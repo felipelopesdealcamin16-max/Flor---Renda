@@ -2,7 +2,6 @@
 // CARRINHO DE COMPRAS
 // =====================================
 
-// CARREGA O CARRINHO SALVO
 let carrinho =
     JSON.parse(localStorage.getItem("carrinho")) || [];
 
@@ -22,38 +21,118 @@ function salvarCarrinho() {
 
 
 // =====================================
-// ADICIONAR PRODUTO AO CARRINHO
+// VARIÁVEIS DO TAMANHO
 // =====================================
 
-function adicionarCarrinho(nome, preco) {
+let produtoSelecionado = null;
 
-    const produtos =
-        document.querySelectorAll(".produto");
+let precoSelecionado = 0;
 
-    let tamanho = "";
-
-    produtos.forEach(function(produto) {
-
-        const titulo =
-            produto.querySelector("h2");
-
-        if (titulo && titulo.innerText === nome) {
-
-            const seletor =
-                produto.querySelector(".seletor-tamanho");
-
-            if (seletor) {
-                tamanho = seletor.value;
-            }
-
-        }
-
-    });
+let tamanhoSelecionado = null;
 
 
-    // VERIFICA SE ESCOLHEU O TAMANHO
+// =====================================
+// ABRIR MODAL DE TAMANHO
+// =====================================
 
-    if (tamanho === "" || tamanho === "Escolha") {
+function abrirTamanhos(nome, preco) {
+
+    produtoSelecionado = nome;
+
+    precoSelecionado = Number(preco);
+
+    tamanhoSelecionado = null;
+
+
+    const nomeProduto =
+        document.getElementById("nomeProdutoTamanho");
+
+    const modal =
+        document.getElementById("modalTamanho");
+
+
+    if (!modal || !nomeProduto) {
+        return;
+    }
+
+
+    nomeProduto.textContent = nome;
+
+
+    document
+        .querySelectorAll(".tamanhos button")
+        .forEach(function(botao) {
+
+            botao.classList.remove("selecionado");
+
+        });
+
+
+    modal.style.display = "flex";
+
+}
+
+
+// =====================================
+// SELECIONAR TAMANHO
+// =====================================
+
+function selecionarTamanho(tamanho, botao) {
+
+    tamanhoSelecionado = tamanho;
+
+
+    document
+        .querySelectorAll(".tamanhos button")
+        .forEach(function(item) {
+
+            item.classList.remove("selecionado");
+
+        });
+
+
+    if (botao) {
+
+        botao.classList.add("selecionado");
+
+    }
+
+}
+
+
+// =====================================
+// FECHAR MODAL
+// =====================================
+
+function fecharTamanhos() {
+
+    const modal =
+        document.getElementById("modalTamanho");
+
+
+    if (modal) {
+
+        modal.style.display = "none";
+
+    }
+
+}
+
+
+// =====================================
+// CONFIRMAR TAMANHO E ADICIONAR
+// =====================================
+
+function confirmarCarrinho() {
+
+    if (!produtoSelecionado) {
+
+        return;
+
+    }
+
+
+    if (!tamanhoSelecionado) {
 
         alert("Escolha um tamanho antes de adicionar ao carrinho.");
 
@@ -62,29 +141,61 @@ function adicionarCarrinho(nome, preco) {
     }
 
 
-    // PROCURA O MESMO PRODUTO COM O MESMO TAMANHO
-
-    const produtoExistente = carrinho.find(
-        function(produto) {
-
-            return produto.nome === nome &&
-                   produto.tamanho === tamanho;
-
-        }
+    adicionarCarrinho(
+        produtoSelecionado,
+        precoSelecionado,
+        tamanhoSelecionado
     );
+
+
+    fecharTamanhos();
+
+}
+
+
+// =====================================
+// ADICIONAR PRODUTO AO CARRINHO
+// =====================================
+
+function adicionarCarrinho(nome, preco, tamanho) {
+
+    // Se o botão não passou tamanho,
+    // abre o modal automaticamente.
+    if (!tamanho) {
+
+        abrirTamanhos(nome, preco);
+
+        return false;
+
+    }
+
+
+    const produtoExistente =
+        carrinho.find(function(produto) {
+
+            return (
+                produto.nome === nome &&
+                produto.tamanho === tamanho
+            );
+
+        });
 
 
     if (produtoExistente) {
 
-        produtoExistente.quantidade++;
+        produtoExistente.quantidade =
+            Number(produtoExistente.quantidade) + 1;
 
     } else {
 
         carrinho.push({
 
             nome: nome,
-            preco: preco,
+
+            preco: Number(preco),
+
             tamanho: tamanho,
+
             quantidade: 1
 
         });
@@ -96,9 +207,13 @@ function adicionarCarrinho(nome, preco) {
 
     atualizarCarrinho();
 
+
     mostrarAvisoCarrinho(
         nome + " - Tamanho " + tamanho
     );
+
+
+    return true;
 
 }
 
@@ -112,15 +227,20 @@ function mostrarAvisoCarrinho(nome) {
     const avisoAntigo =
         document.querySelector(".aviso-carrinho");
 
+
     if (avisoAntigo) {
+
         avisoAntigo.remove();
+
     }
 
 
     const aviso =
         document.createElement("div");
 
-    aviso.className = "aviso-carrinho";
+
+    aviso.className =
+        "aviso-carrinho";
 
 
     aviso.innerHTML = `
@@ -162,9 +282,12 @@ function mostrarAvisoCarrinho(nome) {
 
         aviso.classList.remove("mostrar");
 
+
         setTimeout(function() {
 
-            aviso.remove();
+            if (aviso) {
+                aviso.remove();
+            }
 
         }, 400);
 
@@ -174,7 +297,7 @@ function mostrarAvisoCarrinho(nome) {
 
 
 // =====================================
-// ATUALIZAR TABELA DO CARRINHO
+// ATUALIZAR CARRINHO
 // =====================================
 
 function atualizarCarrinho() {
@@ -187,7 +310,9 @@ function atualizarCarrinho() {
 
 
     if (!tabela || !totalCompra) {
+
         return;
+
     }
 
 
@@ -217,8 +342,17 @@ function atualizarCarrinho() {
 
     carrinho.forEach(function(produto, index) {
 
+        const preco =
+            Number(produto.preco) || 0;
+
+
+        const quantidade =
+            Number(produto.quantidade) || 1;
+
+
         const subtotal =
-            produto.preco * produto.quantidade;
+            preco * quantidade;
+
 
         total += subtotal;
 
@@ -236,7 +370,7 @@ function atualizarCarrinho() {
                 </td>
 
                 <td>
-                    R$ ${produto.preco
+                    R$ ${preco
                         .toFixed(2)
                         .replace(".", ",")}
                 </td>
@@ -252,7 +386,7 @@ function atualizarCarrinho() {
                     </button>
 
                     <span class="quantidade-produto">
-                        ${produto.quantidade}
+                        ${quantidade}
                     </span>
 
                     <button
@@ -303,7 +437,14 @@ function atualizarCarrinho() {
 
 function aumentarQuantidade(index) {
 
-    carrinho[index].quantidade++;
+    if (!carrinho[index]) {
+        return;
+    }
+
+
+    carrinho[index].quantidade =
+        Number(carrinho[index].quantidade) + 1;
+
 
     salvarCarrinho();
 
@@ -318,7 +459,13 @@ function aumentarQuantidade(index) {
 
 function diminuirQuantidade(index) {
 
-    carrinho[index].quantidade--;
+    if (!carrinho[index]) {
+        return;
+    }
+
+
+    carrinho[index].quantidade =
+        Number(carrinho[index].quantidade) - 1;
 
 
     if (carrinho[index].quantidade <= 0) {
@@ -340,6 +487,11 @@ function diminuirQuantidade(index) {
 // =====================================
 
 function removerProduto(index) {
+
+    if (!carrinho[index]) {
+        return;
+    }
+
 
     carrinho.splice(index, 1);
 
@@ -373,7 +525,7 @@ function salvarFavoritos() {
 
 
 // =====================================
-// ADICIONAR AOS FAVORITOS
+// ADICIONAR FAVORITO
 // =====================================
 
 function adicionarFavorito(nome) {
@@ -397,6 +549,7 @@ function adicionarFavorito(nome) {
     favoritos.push(nome);
 
     salvarFavoritos();
+
 
     mostrarAvisoFavorito(
         nome,
@@ -427,17 +580,15 @@ function mostrarFavoritos() {
         "Meus Favoritos:\n\n";
 
 
-    favoritos.forEach(
-        function(produto, index) {
+    favoritos.forEach(function(produto, index) {
 
-            lista +=
-                (index + 1) +
-                " - " +
-                produto +
-                "\n";
+        lista +=
+            (index + 1) +
+            " - " +
+            produto +
+            "\n";
 
-        }
-    );
+    });
 
 
     alert(lista);
@@ -456,7 +607,9 @@ function mostrarAvisoFavorito(nome, mensagem) {
 
 
     if (avisoAntigo) {
+
         avisoAntigo.remove();
+
     }
 
 
@@ -503,9 +656,12 @@ function mostrarAvisoFavorito(nome, mensagem) {
 
         aviso.classList.remove("mostrar");
 
+
         setTimeout(function() {
 
-            aviso.remove();
+            if (aviso) {
+                aviso.remove();
+            }
 
         }, 400);
 
@@ -565,8 +721,8 @@ if (formularioCompra) {
             carrinho.forEach(function(produto) {
 
                 total +=
-                    produto.preco *
-                    produto.quantidade;
+                    Number(produto.preco) *
+                    Number(produto.quantidade);
 
             });
 
@@ -584,7 +740,7 @@ if (formularioCompra) {
                 "Forma de pagamento: " +
                 pagamentoSelecionado.value +
 
-                "\n" +
+                "\n\n" +
 
                 "Total da compra: R$ " +
                 totalFormatado
@@ -676,7 +832,7 @@ if (formularioNewsletter) {
 
 
 // =====================================
-// EFEITO SCROLL NO MENU
+// MENU COM SCROLL
 // =====================================
 
 const linksScroll =
@@ -696,105 +852,107 @@ window.addEventListener(
         let secaoAtual = "inicio";
 
 
-        secoesScroll.forEach(
-            function(secao) {
+        secoesScroll.forEach(function(secao) {
 
-                if (
-                    window.scrollY >=
-                    secao.offsetTop - 200
-                ) {
+            if (
+                window.scrollY >=
+                secao.offsetTop - 200
+            ) {
 
-                    secaoAtual = secao.id;
-
-                }
+                secaoAtual = secao.id;
 
             }
-        );
+
+        });
 
 
-        linksScroll.forEach(
-            function(link) {
+        linksScroll.forEach(function(link) {
 
-                link.classList.remove("ativo");
+            link.classList.remove("ativo");
 
 
-                if (
-                    link.getAttribute("href") ===
-                    "#" + secaoAtual
-                ) {
+            if (
+                link.getAttribute("href") ===
+                "#" + secaoAtual
+            ) {
 
-                    link.classList.add("ativo");
-
-                }
+                link.classList.add("ativo");
 
             }
-        );
+
+        });
 
     }
 );
 
 
 // =====================================
-// TAMANHOS E MEDIDAS DAS ROUPAS
+// MEDIDAS DAS ROUPAS
 // =====================================
 
 function adicionarTamanhosProdutos() {
 
-    const produtos = document.querySelectorAll(".produto");
+    const produtos =
+        document.querySelectorAll(".produto");
+
 
     produtos.forEach(function(produto) {
 
-        const botaoCarrinho = produto.querySelector(
-            'button[onclick*="adicionarCarrinho"]'
-        );
+        const titulo =
+            produto.querySelector("h2");
 
-        const titulo = produto.querySelector("h2");
 
-        if (!botaoCarrinho || !titulo) {
+        if (!titulo) {
             return;
         }
 
-        if (produto.querySelector(".area-tamanho")) {
+
+        const nomeProduto =
+            titulo.innerText.trim();
+
+
+        // Não adiciona medidas em cards que não são produtos.
+        if (
+            nomeProduto === "Vestidos" ||
+            nomeProduto === "Saias" ||
+            nomeProduto === "Florais" ||
+            nomeProduto === "Frete Grátis"
+        ) {
+
+            return;
+
+        }
+
+
+        const botaoCarrinho =
+            produto.querySelector(
+                'button[onclick*="adicionarCarrinho"]'
+            );
+
+
+        if (!botaoCarrinho) {
             return;
         }
 
-        const area = document.createElement("div");
 
-        area.className = "area-tamanho";
+        if (
+            produto.querySelector(".botao-medidas")
+        ) {
+
+            return;
+
+        }
+
+
+        const area =
+            document.createElement("div");
+
+
+        area.className =
+            "area-tamanho";
+
 
         area.innerHTML = `
-            
-            <label>
-                Tamanho:
-            </label>
-
-            <select class="seletor-tamanho">
-
-                <option value="Escolha">
-                    Escolha
-                </option>
-
-                <option value="PP">
-                    PP
-                </option>
-
-                <option value="P">
-                    P
-                </option>
-
-                <option value="M">
-                    M
-                </option>
-
-                <option value="G">
-                    G
-                </option>
-
-                <option value="GG">
-                    GG
-                </option>
-
-            </select>
 
             <button
                 type="button"
@@ -805,20 +963,23 @@ function adicionarTamanhosProdutos() {
 
         `;
 
+
         botaoCarrinho.parentNode.insertBefore(
             area,
             botaoCarrinho
         );
 
+
         const botaoMedidas =
             area.querySelector(".botao-medidas");
+
 
         botaoMedidas.addEventListener(
             "click",
             function() {
 
                 mostrarMedidas(
-                    titulo.innerText
+                    nomeProduto
                 );
 
             }
@@ -835,121 +996,261 @@ function adicionarTamanhosProdutos() {
 
 function mostrarMedidas(nomeProduto) {
 
-    const ehSaia = nomeProduto
-        .toLowerCase()
-        .includes("saia");
+    const ehSaia =
+        nomeProduto
+            .toLowerCase()
+            .includes("saia");
+
 
     let titulo;
+
     let conteudo;
+
 
     if (ehSaia) {
 
-        titulo = "Medidas das Saias";
+        titulo =
+            "Medidas das Saias";
+
 
         conteudo = `
+
             <table class="tabela-medidas">
 
                 <tr>
-                    <th>Tamanho</th>
-                    <th>Cintura</th>
-                    <th>Quadril</th>
+
+                    <th>
+                        Tamanho
+                    </th>
+
+                    <th>
+                        Cintura
+                    </th>
+
+                    <th>
+                        Quadril
+                    </th>
+
                 </tr>
 
+
                 <tr>
+
                     <td>PP</td>
-                    <td>60 - 64 cm</td>
-                    <td>86 - 90 cm</td>
+
+                    <td>
+                        60 - 64 cm
+                    </td>
+
+                    <td>
+                        86 - 90 cm
+                    </td>
+
                 </tr>
 
+
                 <tr>
+
                     <td>P</td>
-                    <td>64 - 68 cm</td>
-                    <td>90 - 94 cm</td>
+
+                    <td>
+                        64 - 68 cm
+                    </td>
+
+                    <td>
+                        90 - 94 cm
+                    </td>
+
                 </tr>
 
+
                 <tr>
+
                     <td>M</td>
-                    <td>68 - 74 cm</td>
-                    <td>94 - 100 cm</td>
+
+                    <td>
+                        68 - 74 cm
+                    </td>
+
+                    <td>
+                        94 - 100 cm
+                    </td>
+
                 </tr>
 
+
                 <tr>
+
                     <td>G</td>
-                    <td>74 - 80 cm</td>
-                    <td>100 - 106 cm</td>
+
+                    <td>
+                        74 - 80 cm
+                    </td>
+
+                    <td>
+                        100 - 106 cm
+                    </td>
+
                 </tr>
 
+
                 <tr>
+
                     <td>GG</td>
-                    <td>80 - 86 cm</td>
-                    <td>106 - 112 cm</td>
+
+                    <td>
+                        80 - 86 cm
+                    </td>
+
+                    <td>
+                        106 - 112 cm
+                    </td>
+
                 </tr>
 
             </table>
+
         `;
 
     } else {
 
-        titulo = "Medidas dos Vestidos";
+        titulo =
+            "Medidas dos Vestidos";
+
 
         conteudo = `
+
             <table class="tabela-medidas">
 
                 <tr>
-                    <th>Tamanho</th>
-                    <th>Busto</th>
-                    <th>Cintura</th>
-                    <th>Quadril</th>
+
+                    <th>
+                        Tamanho
+                    </th>
+
+                    <th>
+                        Busto
+                    </th>
+
+                    <th>
+                        Cintura
+                    </th>
+
+                    <th>
+                        Quadril
+                    </th>
+
                 </tr>
 
+
                 <tr>
+
                     <td>PP</td>
-                    <td>80 - 84 cm</td>
-                    <td>60 - 64 cm</td>
-                    <td>86 - 90 cm</td>
+
+                    <td>
+                        80 - 84 cm
+                    </td>
+
+                    <td>
+                        60 - 64 cm
+                    </td>
+
+                    <td>
+                        86 - 90 cm
+                    </td>
+
                 </tr>
 
+
                 <tr>
+
                     <td>P</td>
-                    <td>84 - 88 cm</td>
-                    <td>64 - 68 cm</td>
-                    <td>90 - 94 cm</td>
+
+                    <td>
+                        84 - 88 cm
+                    </td>
+
+                    <td>
+                        64 - 68 cm
+                    </td>
+
+                    <td>
+                        90 - 94 cm
+                    </td>
+
                 </tr>
 
+
                 <tr>
+
                     <td>M</td>
-                    <td>88 - 94 cm</td>
-                    <td>68 - 74 cm</td>
-                    <td>94 - 100 cm</td>
+
+                    <td>
+                        88 - 94 cm
+                    </td>
+
+                    <td>
+                        68 - 74 cm
+                    </td>
+
+                    <td>
+                        94 - 100 cm
+                    </td>
+
                 </tr>
 
+
                 <tr>
+
                     <td>G</td>
-                    <td>94 - 100 cm</td>
-                    <td>74 - 80 cm</td>
-                    <td>100 - 106 cm</td>
+
+                    <td>
+                        94 - 100 cm
+                    </td>
+
+                    <td>
+                        74 - 80 cm
+                    </td>
+
+                    <td>
+                        100 - 106 cm
+                    </td>
+
                 </tr>
 
+
                 <tr>
+
                     <td>GG</td>
-                    <td>100 - 106 cm</td>
-                    <td>80 - 86 cm</td>
-                    <td>106 - 112 cm</td>
+
+                    <td>
+                        100 - 106 cm
+                    </td>
+
+                    <td>
+                        80 - 86 cm
+                    </td>
+
+                    <td>
+                        106 - 112 cm
+                    </td>
+
                 </tr>
 
             </table>
+
         `;
 
     }
 
 
-    // =====================================
-    // CRIAR JANELA
-    // =====================================
+    const modal =
+        document.createElement("div");
 
-    const modal = document.createElement("div");
 
-    modal.className = "modal-medidas";
+    modal.className =
+        "modal-medidas";
+
 
     modal.innerHTML = `
 
@@ -962,47 +1263,230 @@ function mostrarMedidas(nomeProduto) {
                 ×
             </button>
 
-            <h2>${titulo}</h2>
+            <h2>
+                ${titulo}
+            </h2>
 
             ${conteudo}
 
             <p>
-                As medidas podem variar de acordo com
-                a modelagem de cada peça.
+                As medidas podem variar de acordo
+                com a modelagem de cada peça.
             </p>
 
         </div>
 
     `;
 
+
     document.body.appendChild(modal);
 
 
-    // =====================================
-    // FECHAR NO X
-    // =====================================
-
-    modal.querySelector(".fechar-medidas")
-        .addEventListener("click", function() {
-
-            modal.remove();
-
-        });
+    const botaoFechar =
+        modal.querySelector(".fechar-medidas");
 
 
-    // =====================================
-    // FECHAR CLICANDO FORA
-    // =====================================
-
-    modal.addEventListener("click", function(event) {
-
-        if (event.target === modal) {
+    botaoFechar.addEventListener(
+        "click",
+        function() {
 
             modal.remove();
 
         }
+    );
+
+
+    modal.addEventListener(
+        "click",
+        function(event) {
+
+            if (event.target === modal) {
+
+                modal.remove();
+
+            }
+
+        }
+    );
+
+}
+
+
+// =====================================
+// PESQUISA
+// =====================================
+
+const campoPesquisa =
+    document.getElementById("campoPesquisa");
+
+
+const btnPesquisar =
+    document.getElementById("btnPesquisar");
+
+
+function realizarPesquisa() {
+
+    if (!campoPesquisa) {
+        return;
+    }
+
+
+    const pesquisa =
+        campoPesquisa.value
+            .toLowerCase()
+            .trim();
+
+
+    const produtos =
+        document.querySelectorAll(
+            "#vestidos .produto, #saias .produto"
+        );
+
+
+    if (pesquisa === "") {
+
+        produtos.forEach(function(produto) {
+
+            produto.style.display = "";
+
+        });
+
+        return;
+
+    }
+
+
+    let encontrou =
+        false;
+
+
+    produtos.forEach(function(produto) {
+
+        const nome =
+            produto.innerText.toLowerCase();
+
+
+        if (nome.includes(pesquisa)) {
+
+            produto.style.display = "";
+
+            encontrou = true;
+
+        } else {
+
+            produto.style.display = "none";
+
+        }
 
     });
+
+
+    if (encontrou) {
+
+        const primeiroResultado =
+            Array.from(produtos).find(function(produto) {
+
+                return produto.style.display !== "none";
+
+            });
+
+
+        if (primeiroResultado) {
+
+            primeiroResultado.scrollIntoView({
+                behavior: "smooth",
+                block: "center"
+            });
+
+        }
+
+    } else {
+
+        alert(
+            "Nenhuma roupa encontrada para: " +
+            campoPesquisa.value
+        );
+
+    }
+
+}
+
+
+// =====================================
+// BOTÃO DE PESQUISA
+// =====================================
+
+if (btnPesquisar) {
+
+    btnPesquisar.addEventListener(
+        "click",
+        realizarPesquisa
+    );
+
+}
+
+
+// =====================================
+// CTRL + ENTER NA PESQUISA
+// =====================================
+
+if (campoPesquisa) {
+
+    campoPesquisa.addEventListener(
+        "keydown",
+        function(event) {
+
+            if (
+                event.key === "Enter" &&
+                event.ctrlKey
+            ) {
+
+                event.preventDefault();
+
+                realizarPesquisa();
+
+            }
+
+        }
+    );
+
+}
+
+
+// =====================================
+// PESQUISA ENQUANTO DIGITA
+// =====================================
+
+if (campoPesquisa) {
+
+    campoPesquisa.addEventListener(
+        "input",
+        function() {
+
+            const pesquisa =
+                campoPesquisa.value
+                    .toLowerCase()
+                    .trim();
+
+
+            if (pesquisa === "") {
+
+                const produtos =
+                    document.querySelectorAll(
+                        "#vestidos .produto, #saias .produto"
+                    );
+
+
+                produtos.forEach(function(produto) {
+
+                    produto.style.display = "";
+
+                });
+
+            }
+
+        }
+    );
 
 }
 
@@ -1024,60 +1508,60 @@ document.addEventListener(
 
 
 // =====================================
-// EFEITOS DE ROLAGEM
+// EFEITO SCROLL
 // =====================================
 
 const elementosScroll =
     document.querySelectorAll("main section");
 
 
-elementosScroll.forEach(
-    function(elemento) {
+elementosScroll.forEach(function(elemento) {
 
-        elemento.classList.add(
-            "efeito-scroll"
-        );
-
-    }
-);
-
-
-const observadorScroll =
-    new IntersectionObserver(
-        function(elementos) {
-
-            elementos.forEach(
-                function(elemento) {
-
-                    if (elemento.isIntersecting) {
-
-                        elemento.target.classList.add(
-                            "aparecer"
-                        );
-
-                    }
-
-                }
-            );
-
-        },
-        {
-            threshold: 0.15
-        }
+    elemento.classList.add(
+        "efeito-scroll"
     );
 
+});
 
-elementosScroll.forEach(
-    function(elemento) {
+
+if ("IntersectionObserver" in window) {
+
+    const observadorScroll =
+        new IntersectionObserver(
+            function(elementos) {
+
+                elementos.forEach(
+                    function(elemento) {
+
+                        if (elemento.isIntersecting) {
+
+                            elemento.target.classList.add(
+                                "aparecer"
+                            );
+
+                        }
+
+                    }
+                );
+
+            },
+            {
+                threshold: 0.15
+            }
+        );
+
+
+    elementosScroll.forEach(function(elemento) {
 
         observadorScroll.observe(elemento);
 
-    }
-);
+    });
+
+}
 
 
 // =====================================
-// EFEITO DE ROLAGEM MODERNO
+// EFEITO REVEAL
 // =====================================
 
 const elementosReveal =
@@ -1092,141 +1576,133 @@ const imagensReveal =
     );
 
 
-elementosReveal.forEach(
-    function(elemento) {
+elementosReveal.forEach(function(elemento) {
 
-        elemento.classList.add(
-            "scroll-reveal"
-        );
-
-    }
-);
-
-
-imagensReveal.forEach(
-    function(elemento) {
-
-        elemento.classList.add(
-            "scroll-imagem"
-        );
-
-    }
-);
-
-
-const observerReveal =
-    new IntersectionObserver(
-        function(entries) {
-
-            entries.forEach(
-                function(entry) {
-
-                    if (entry.isIntersecting) {
-
-                        entry.target.classList.add(
-                            "aparecer"
-                        );
-
-                        observerReveal.unobserve(
-                            entry.target
-                        );
-
-                    }
-
-                }
-            );
-
-        },
-        {
-            threshold: 0.12
-        }
+    elemento.classList.add(
+        "scroll-reveal"
     );
 
+});
 
-elementosReveal.forEach(
-    function(elemento) {
+
+imagensReveal.forEach(function(elemento) {
+
+    elemento.classList.add(
+        "scroll-imagem"
+    );
+
+});
+
+
+if ("IntersectionObserver" in window) {
+
+    const observerReveal =
+        new IntersectionObserver(
+            function(entries) {
+
+                entries.forEach(
+                    function(entry) {
+
+                        if (entry.isIntersecting) {
+
+                            entry.target.classList.add(
+                                "aparecer"
+                            );
+
+
+                            observerReveal.unobserve(
+                                entry.target
+                            );
+
+                        }
+
+                    }
+                );
+
+            },
+            {
+                threshold: 0.12
+            }
+        );
+
+
+    elementosReveal.forEach(function(elemento) {
 
         observerReveal.observe(elemento);
 
-    }
-);
+    });
 
 
-imagensReveal.forEach(
-    function(elemento) {
+    imagensReveal.forEach(function(elemento) {
 
         observerReveal.observe(elemento);
 
-    }
-);
+    });
+
+}
 
 
 // =====================================
-// ANIMAÇÃO AO CLICAR NAS ABAS
+// ANIMAÇÃO DAS ABAS
 // =====================================
 
 const linksMenuAnimacao =
     document.querySelectorAll(".menu a");
 
 
-linksMenuAnimacao.forEach(
-    function(link) {
+linksMenuAnimacao.forEach(function(link) {
 
-        link.addEventListener(
-            "click",
-            function() {
+    link.addEventListener(
+        "click",
+        function() {
 
-                const destinoId =
-                    link.getAttribute("href");
-
-
-                if (!destinoId.startsWith("#")) {
-                    return;
-                }
+            const destinoId =
+                link.getAttribute("href");
 
 
-                const secao =
-                    document.querySelector(destinoId);
+            if (!destinoId.startsWith("#")) {
+                return;
+            }
 
 
-                if (!secao) {
-                    return;
-                }
+            const secao =
+                document.querySelector(destinoId);
 
+
+            if (!secao) {
+                return;
+            }
+
+
+            secao.classList.remove(
+                "animar-secao"
+            );
+
+
+            void secao.offsetWidth;
+
+
+            secao.classList.add(
+                "animar-secao"
+            );
+
+
+            setTimeout(function() {
 
                 secao.classList.remove(
                     "animar-secao"
                 );
 
+            }, 800);
 
-                void secao.offsetWidth;
+        }
+    );
 
-
-                secao.classList.add(
-                    "animar-secao"
-                );
-
-
-                setTimeout(
-                    function() {
-
-                        secao.classList.remove(
-                            "animar-secao"
-                        );
-
-                    },
-                    800
-                );
-
-            }
-        );
-
-    }
-);
+});
 
 
 // =====================================
-// SCROLL ANIMADO - FLOR & RENDA
+// ANIMAÇÕES DOS TÍTULOS
 // =====================================
 
 const titulosScroll =
@@ -1235,19 +1711,19 @@ const titulosScroll =
     );
 
 
-titulosScroll.forEach(
-    function(elemento) {
+titulosScroll.forEach(function(elemento) {
 
-        elemento.classList.add(
-            "scroll-item",
-            "scroll-baixo"
-        );
+    elemento.classList.add(
+        "scroll-item",
+        "scroll-baixo"
+    );
 
-    }
-);
+});
 
 
-// CARDS DOS PRODUTOS
+// =====================================
+// ANIMAÇÕES DOS PRODUTOS
+// =====================================
 
 const produtosScroll =
     document.querySelectorAll(".produto");
@@ -1279,7 +1755,9 @@ produtosScroll.forEach(
 );
 
 
-// IMAGENS DA NOVA COLEÇÃO
+// =====================================
+// ANIMAÇÕES COLEÇÃO
+// =====================================
 
 const colecaoScroll =
     document.querySelectorAll(
@@ -1287,19 +1765,19 @@ const colecaoScroll =
     );
 
 
-colecaoScroll.forEach(
-    function(elemento) {
+colecaoScroll.forEach(function(elemento) {
 
-        elemento.classList.add(
-            "scroll-item",
-            "scroll-zoom"
-        );
+    elemento.classList.add(
+        "scroll-item",
+        "scroll-zoom"
+    );
 
-    }
-);
+});
 
 
-// SOBRE
+// =====================================
+// ANIMAÇÕES SOBRE
+// =====================================
 
 const sobreScroll =
     document.querySelectorAll(
@@ -1307,19 +1785,19 @@ const sobreScroll =
     );
 
 
-sobreScroll.forEach(
-    function(elemento) {
+sobreScroll.forEach(function(elemento) {
 
-        elemento.classList.add(
-            "scroll-item",
-            "scroll-baixo"
-        );
+    elemento.classList.add(
+        "scroll-item",
+        "scroll-baixo"
+    );
 
-    }
-);
+});
 
 
+// =====================================
 // CONTATO E RODAPÉ
+// =====================================
 
 const outrosScroll =
     document.querySelectorAll(
@@ -1353,88 +1831,84 @@ outrosScroll.forEach(
 );
 
 
-// OBSERVADOR DO SCROLL
+// =====================================
+// OBSERVADOR DAS ANIMAÇÕES
+// =====================================
 
-const observerScrollAnimado =
-    new IntersectionObserver(
-        function(entries) {
+if ("IntersectionObserver" in window) {
 
-            entries.forEach(
-                function(entry) {
+    const observerScrollAnimado =
+        new IntersectionObserver(
+            function(entries) {
 
-                    if (entry.isIntersecting) {
+                entries.forEach(
+                    function(entry) {
 
-                        entry.target.classList.add(
-                            "aparecer"
-                        );
+                        if (entry.isIntersecting) {
+
+                            entry.target.classList.add(
+                                "aparecer"
+                            );
 
 
-                        observerScrollAnimado.unobserve(
-                            entry.target
-                        );
+                            observerScrollAnimado.unobserve(
+                                entry.target
+                            );
+
+                        }
 
                     }
+                );
 
-                }
-            );
-
-        },
-        {
-            threshold: 0.15
-        }
-    );
+            },
+            {
+                threshold: 0.15
+            }
+        );
 
 
-produtosScroll.forEach(
-    function(elemento) {
+    produtosScroll.forEach(function(elemento) {
 
         observerScrollAnimado.observe(
             elemento
         );
 
-    }
-);
+    });
 
 
-titulosScroll.forEach(
-    function(elemento) {
+    titulosScroll.forEach(function(elemento) {
 
         observerScrollAnimado.observe(
             elemento
         );
 
-    }
-);
+    });
 
 
-colecaoScroll.forEach(
-    function(elemento) {
+    colecaoScroll.forEach(function(elemento) {
 
         observerScrollAnimado.observe(
             elemento
         );
 
-    }
-);
+    });
 
 
-sobreScroll.forEach(
-    function(elemento) {
+    sobreScroll.forEach(function(elemento) {
 
         observerScrollAnimado.observe(
             elemento
         );
 
-    }
-);
+    });
 
 
-outrosScroll.forEach(
-    function(elemento) {
+    outrosScroll.forEach(function(elemento) {
 
         observerScrollAnimado.observe(
             elemento
         );
 
-    }
-);
+    });
+
+}
