@@ -25,9 +25,10 @@
 
 <header>
 
-    <div class="logo">
+    <a href="index.html" class="logo">
+        <img src="imagens/logo.jpeg" alt="Logo Flor & Renda">
         <h2>Flor & Renda</h2>
-    </div>
+    </a>
 
     <nav>
 
@@ -85,7 +86,6 @@
 
 
         <section class="cards-vestidos">
-            <section class="cards-vestidos">
 
 
     <!-- =========================
@@ -95,7 +95,7 @@
     <article class="card-vestido">
 
         <img
-            src="floreste.jpg"
+            src="imagens/floreste.jpg"
             alt="Saia Floral Tropical"
         >
 
@@ -116,7 +116,8 @@
             type="button"
             onclick="comprarProduto(
                 'Saia Floral Tropical',
-                189.90
+                189.90,
+                this
             )"
         >
             Comprar
@@ -132,7 +133,7 @@
     <article class="card-vestido">
 
         <img
-            src="saia flor amarela.jpg"
+            src="imagens/saia flor amarela.jpg"
             alt="Saia Longa Floral Amarela"
         >
 
@@ -153,17 +154,14 @@
             type="button"
             onclick="comprarProduto(
                 'Saia Longa Floral Amarela',
-                219.90
+                219.90,
+                this
             )"
         >
             Comprar
         </button>
 
     </article>
-
-
-</section>
-
 
             <!-- =========================
                     SAIA 1
@@ -172,7 +170,7 @@
             <article class="card-vestido">
 
                 <img
-                    src="saia1.jpg"
+                    src="imagens/saia1.jpg"
                     alt="Saia Floresta de Passarinho"
                 >
 
@@ -193,7 +191,8 @@
                     type="button"
                     onclick="comprarProduto(
                         'Saia Floresta de Passarinho',
-                        169.90
+                        169.90,
+                        this
                     )"
                 >
                     Comprar
@@ -209,7 +208,7 @@
             <article class="card-vestido">
 
                 <img
-                    src="saia2.jpg"
+                    src="imagens/saia2.jpg"
                     alt="Saia Curta Pareô"
                 >
 
@@ -230,7 +229,8 @@
                     type="button"
                     onclick="comprarProduto(
                         'Saia Curta Pareô',
-                        159.90
+                        159.90,
+                        this
                     )"
                 >
                     Comprar
@@ -246,7 +246,7 @@
             <article class="card-vestido">
 
                 <img
-                    src="saia3.jpg"
+                    src="imagens/saia3.jpg"
                     alt="Saia Floral Michelle"
                 >
 
@@ -267,7 +267,8 @@
                     type="button"
                     onclick="comprarProduto(
                         'Saia Floral Michelle',
-                        179.90
+                        179.90,
+                        this
                     )"
                 >
                     Comprar
@@ -437,38 +438,9 @@
 
 <script>
 
-function comprarProduto(nome, preco) {
+function comprarProduto(nome, preco, botao) {
 
-    let carrinho = JSON.parse(
-        localStorage.getItem("carrinho")
-    ) || [];
-
-    const produtoExistente = carrinho.find(
-        produto => produto.nome === nome
-    );
-
-    if (produtoExistente) {
-
-        produtoExistente.quantidade++;
-
-    } else {
-
-        carrinho.push({
-
-            nome: nome,
-            preco: preco,
-            quantidade: 1
-
-        });
-
-    }
-
-    localStorage.setItem(
-        "carrinho",
-        JSON.stringify(carrinho)
-    );
-
-    window.location.href = "index.html#carrinho";
+    adicionarCarrinho(nome, preco, null, botao);
 
 }
 

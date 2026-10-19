@@ -21,9 +21,10 @@
 
 <header class="cabecalho">
 
-    <div class="logo">
+    <a href="index.html" class="logo">
+        <img src="imagens/logo.jpeg" alt="Logo Flor & Renda">
         <h2>Flor & Renda</h2>
-    </div>
+    </a>
 
     <nav class="menu">
 
@@ -67,142 +68,112 @@
 
     <form id="formCompra">
 
+        <fieldset>
 
-        <!-- DADOS -->
+            <legend>Dados do Cliente</legend>
 
-        <h2>Dados do Cliente</h2>
+            <div class="grade-formulario">
 
-        <input
-            type="text"
-            name="nome"
-            placeholder="Nome completo"
-            required
-        >
+                <label class="campo-formulario campo-largo">
+                    <span>Nome completo</span>
+                    <input type="text" name="nome" required>
+                </label>
 
-        <input
-            type="email"
-            name="email"
-            placeholder="E-mail"
-            required
-        >
+                <label class="campo-formulario">
+                    <span>E-mail</span>
+                    <input type="email" name="email" required>
+                </label>
 
-        <input
-            type="tel"
-            name="telefone"
-            placeholder="Telefone"
-            required
-        >
+                <label class="campo-formulario">
+                    <span>Telefone</span>
+                    <input type="tel" name="telefone" required>
+                </label>
 
-        <input
-            type="text"
-            name="cpf"
-            placeholder="CPF"
-            required
-        >
+                <label class="campo-formulario">
+                    <span>CPF</span>
+                    <input type="text" name="cpf" required>
+                </label>
+
+            </div>
+
+        </fieldset>
 
 
-        <!-- ENDEREÇO -->
+        <fieldset>
 
-        <h2>Endereço de Entrega</h2>
+            <legend>Endereço de Entrega</legend>
 
-        <input
-            type="text"
-            name="cep"
-            placeholder="CEP"
-            required
-        >
+            <div class="grade-formulario">
 
-        <input
-            type="text"
-            name="rua"
-            placeholder="Rua"
-            required
-        >
+                <label class="campo-formulario">
+                    <span>CEP</span>
+                    <input type="text" name="cep" required>
+                </label>
 
-        <input
-            type="text"
-            name="numero"
-            placeholder="Número"
-            required
-        >
+                <label class="campo-formulario campo-largo">
+                    <span>Rua</span>
+                    <input type="text" name="rua" required>
+                </label>
 
-        <input
-            type="text"
-            name="complemento"
-            placeholder="Complemento"
-        >
+                <label class="campo-formulario">
+                    <span>Número</span>
+                    <input type="text" name="numero" required>
+                </label>
 
-        <input
-            type="text"
-            name="bairro"
-            placeholder="Bairro"
-            required
-        >
+                <label class="campo-formulario">
+                    <span>Complemento</span>
+                    <input type="text" name="complemento">
+                </label>
 
-        <input
-            type="text"
-            name="cidade"
-            placeholder="Cidade"
-            required
-        >
+                <label class="campo-formulario">
+                    <span>Bairro</span>
+                    <input type="text" name="bairro" required>
+                </label>
 
-        <input
-            type="text"
-            name="estado"
-            placeholder="Estado"
-            required
-        >
+                <label class="campo-formulario">
+                    <span>Cidade</span>
+                    <input type="text" name="cidade" required>
+                </label>
+
+                <label class="campo-formulario">
+                    <span>Estado</span>
+                    <input type="text" name="estado" required>
+                </label>
+
+            </div>
+
+        </fieldset>
 
 
-        <!-- PAGAMENTO -->
+        <fieldset>
 
-        <h2>Forma de Pagamento</h2>
+            <legend>Forma de Pagamento</legend>
 
+            <div class="opcoes-pagamento">
 
-        <label>
+                <label>
+                    <input type="radio" name="pagamento" value="Pix" required>
+                    <span>PIX</span>
+                </label>
 
-            <input
-                type="radio"
-                name="pagamento"
-                value="Pix"
-                required
-            >
+                <label>
+                    <input type="radio" name="pagamento" value="Cartão de Crédito">
+                    <span>Cartão de Crédito</span>
+                </label>
 
-            PIX
+                <label>
+                    <input type="radio" name="pagamento" value="Boleto Bancário">
+                    <span>Boleto Bancário</span>
+                </label>
 
-        </label>
+            </div>
 
-
-        <label>
-
-            <input
-                type="radio"
-                name="pagamento"
-                value="Cartão de Crédito"
-            >
-
-            Cartão de Crédito
-
-        </label>
+        </fieldset>
 
 
-        <label>
-
-            <input
-                type="radio"
-                name="pagamento"
-                value="Boleto Bancário"
-            >
-
-            Boleto Bancário
-
-        </label>
-
-
-        <button type="submit">
+        <button type="submit" class="confirmar-pedido">
             Confirmar Pedido
         </button>
-
 
     </form>
 

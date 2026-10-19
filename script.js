@@ -7,6 +7,70 @@ let carrinho =
 
 
 // =====================================
+// MENU RESPONSIVO
+// =====================================
+
+function criarMenuResponsivo() {
+
+    const cabecalho = document.querySelector("header");
+    const menu = cabecalho ? cabecalho.querySelector("nav") : null;
+
+    if (!cabecalho || !menu) {
+        return;
+    }
+
+    const botaoMenu = document.createElement("button");
+
+    botaoMenu.type = "button";
+    botaoMenu.className = "botao-menu";
+    botaoMenu.textContent = "☰ Menu";
+    botaoMenu.setAttribute("aria-expanded", "false");
+    botaoMenu.setAttribute("aria-label", "Abrir menu");
+
+    cabecalho.insertBefore(botaoMenu, menu);
+    document.body.classList.add("tem-menu-responsivo");
+
+    botaoMenu.addEventListener("click", function() {
+
+        const menuEstaAberto =
+            cabecalho.classList.toggle("menu-aberto");
+
+        botaoMenu.textContent = menuEstaAberto
+            ? "× Fechar"
+            : "☰ Menu";
+
+        botaoMenu.setAttribute(
+            "aria-expanded",
+            String(menuEstaAberto)
+        );
+
+        botaoMenu.setAttribute(
+            "aria-label",
+            menuEstaAberto ? "Fechar menu" : "Abrir menu"
+        );
+
+    });
+
+    menu.querySelectorAll("a").forEach(function(link) {
+
+        link.addEventListener("click", function() {
+
+            cabecalho.classList.remove("menu-aberto");
+            botaoMenu.textContent = "☰ Menu";
+            botaoMenu.setAttribute("aria-expanded", "false");
+            botaoMenu.setAttribute("aria-label", "Abrir menu");
+
+        });
+
+    });
+
+}
+
+
+criarMenuResponsivo();
+
+
+// =====================================
 // SALVAR CARRINHO
 // =====================================
 
@@ -21,6 +85,26 @@ function salvarCarrinho() {
 
 
 // =====================================
+// SAIR DA CONTA
+// =====================================
+
+function sair() {
+
+    fetch("backend/logout.php", {
+        method: "POST"
+    })
+    .then(function() {
+        localStorage.removeItem("usuarioLogado");
+        window.location.href = "login.html";
+    })
+    .catch(function() {
+        alert("Não foi possível sair da conta.");
+    });
+
+}
+
+
+// =====================================
 // VARIÁVEIS DO TAMANHO
 // =====================================
 
@@ -30,18 +114,87 @@ let precoSelecionado = 0;
 
 let tamanhoSelecionado = null;
 
+let imagemSelecionada = "";
+
+
+// Busca a imagem dentro do mesmo card do botão clicado.
+function buscarImagemDoProduto(botao) {
+
+    if (!botao || !botao.parentElement) {
+        return "";
+    }
+
+    const imagem = botao.parentElement.querySelector("img");
+
+    return imagem ? imagem.getAttribute("src") : "";
+
+}
+
+
+// =====================================
+// CRIAR MODAL QUANDO A PÁGINA NÃO TEM
+// =====================================
+
+function criarModalTamanho() {
+
+    const modal = document.createElement("div");
+
+    modal.id = "modalTamanho";
+    modal.className = "modal-tamanho";
+
+    modal.innerHTML = `
+        <div class="caixa-tamanho">
+            <button
+                type="button"
+                class="fechar-tamanho"
+                onclick="fecharTamanhos()"
+            >
+                ×
+            </button>
+
+            <h2>Escolha o tamanho</h2>
+            <p id="nomeProdutoTamanho"></p>
+
+            <div class="tamanhos">
+                <button type="button" onclick="selecionarTamanho('PP', this)">PP</button>
+                <button type="button" onclick="selecionarTamanho('P', this)">P</button>
+                <button type="button" onclick="selecionarTamanho('M', this)">M</button>
+                <button type="button" onclick="selecionarTamanho('G', this)">G</button>
+                <button type="button" onclick="selecionarTamanho('GG', this)">GG</button>
+            </div>
+
+            <button
+                type="button"
+                class="botao-confirmar-tamanho"
+                onclick="confirmarCarrinho()"
+            >
+                Adicionar ao Carrinho
+            </button>
+        </div>
+    `;
+
+    document.body.appendChild(modal);
+
+}
+
 
 // =====================================
 // ABRIR MODAL DE TAMANHO
 // =====================================
 
-function abrirTamanhos(nome, preco) {
+function abrirTamanhos(nome, preco, botao) {
+
+    if (!document.getElementById("modalTamanho")) {
+        criarModalTamanho();
+    }
 
     produtoSelecionado = nome;
 
     precoSelecionado = Number(preco);
 
     tamanhoSelecionado = null;
+
+    imagemSelecionada = buscarImagemDoProduto(botao);
 
 
     const nomeProduto =
@@ -157,13 +310,13 @@ function confirmarCarrinho() {
 // ADICIONAR PRODUTO AO CARRINHO
 // =====================================
 
-function adicionarCarrinho(nome, preco, tamanho) {
+function adicionarCarrinho(nome, preco, tamanho, botao) {
 
     // Se o botão não passou tamanho,
     // abre o modal automaticamente.
     if (!tamanho) {
 
-        abrirTamanhos(nome, preco);
+        abrirTamanhos(nome, preco, botao);
 
         return false;
 
@@ -181,10 +334,18 @@ function adicionarCarrinho(nome, preco, tamanho) {
         });
 
 
+    const imagem =
+        buscarImagemDoProduto(botao) || imagemSelecionada;
+
+
     if (produtoExistente) {
 
         produtoExistente.quantidade =
             Number(produtoExistente.quantidade) + 1;
+
+        if (imagem) {
+            produtoExistente.imagem = imagem;
+        }
 
     } else {
 
@@ -195,6 +356,8 @@ function adicionarCarrinho(nome, preco, tamanho) {
             preco: Number(preco),
 
             tamanho: tamanho,
+
+            imagem: imagem,
 
             quantidade: 1
 
@@ -214,6 +377,30 @@ function adicionarCarrinho(nome, preco, tamanho) {
 
 
     return true;
+
+}
+
+
+// =====================================
+// ADICIONAR NAS PÁGINAS DAS MARCAS
+// =====================================
+
+function adicionarCarrinhoLoja(botao, nome, preco) {
+
+    const card = botao.parentElement;
+    const campoTamanho = card.querySelector("select");
+
+    if (!campoTamanho || campoTamanho.value === "") {
+        alert("Escolha um tamanho antes de adicionar ao carrinho.");
+        return;
+    }
+
+    adicionarCarrinho(
+        nome,
+        preco,
+        campoTamanho.value,
+        botao
+    );
 
 }
 
@@ -337,6 +524,19 @@ function atualizarCarrinho() {
     `;
 
 
+    if (carrinho.length === 0) {
+
+        tabela.innerHTML += `
+            <tr class="carrinho-vazio">
+                <td colspan="6">
+                    Seu carrinho está vazio.
+                </td>
+            </tr>
+        `;
+
+    }
+
+
     let total = 0;
 
 
@@ -361,8 +561,16 @@ function atualizarCarrinho() {
 
             <tr>
 
-                <td>
-                    ${produto.nome}
+                <td class="produto-carrinho">
+                    ${produto.imagem ? `
+                        <img
+                            src="${produto.imagem}"
+                            alt="${produto.nome}"
+                            class="miniatura-carrinho"
+                        >
+                    ` : ""}
+
+                    <span>${produto.nome}</span>
                 </td>
 
                 <td>
@@ -565,33 +773,72 @@ function adicionarFavorito(nome) {
 
 function mostrarFavoritos() {
 
-    if (favoritos.length === 0) {
+    const modalAntigo =
+        document.querySelector(".modal-favoritos");
 
-        alert(
-            "Você ainda não possui produtos favoritos."
-        );
+    if (modalAntigo) {
+        modalAntigo.remove();
+    }
 
-        return;
+    const modal = document.createElement("div");
+    modal.className = "modal-favoritos";
+
+    let conteudo = `
+        <p class="favoritos-vazio">
+            Você ainda não possui produtos favoritos.
+        </p>
+    `;
+
+    if (favoritos.length > 0) {
+
+        conteudo = "<ul class=\"lista-favoritos\">";
+
+        favoritos.forEach(function(produto) {
+            conteudo += `<li><span>☆</span>${produto}</li>`;
+        });
+
+        conteudo += "</ul>";
 
     }
 
+    modal.innerHTML = `
+        <div class="caixa-favoritos" role="dialog" aria-modal="true">
+            <button
+                type="button"
+                class="fechar-favoritos"
+                onclick="fecharFavoritos()"
+                aria-label="Fechar favoritos"
+            >
+                ×
+            </button>
 
-    let lista =
-        "Meus Favoritos:\n\n";
+            <h2>Meus Favoritos</h2>
+            <p class="subtitulo-favoritos">
+                Produtos que você marcou para ver depois.
+            </p>
 
+            ${conteudo}
+        </div>
+    `;
 
-    favoritos.forEach(function(produto, index) {
-
-        lista +=
-            (index + 1) +
-            " - " +
-            produto +
-            "\n";
-
+    modal.addEventListener("click", function(event) {
+        if (event.target === modal) {
+            fecharFavoritos();
+        }
     });
 
+    document.body.appendChild(modal);
 
-    alert(lista);
+}
+
+
+function fecharFavoritos() {
+
+    const modal = document.querySelector(".modal-favoritos");
+
+    if (modal) {
+        modal.remove();
+    }
 
 }
 
@@ -670,6 +917,187 @@ function mostrarAvisoFavorito(nome, mensagem) {
 }
 
 
+// Coloca a estrela na mesma linha do preço em cada card.
+function organizarPrecoEFavorito() {
+
+    const produtos = document.querySelectorAll(
+        "#vestidos .produto, #saias .produto, .produto-parceira"
+    );
+
+    produtos.forEach(function(produto) {
+
+        const preco = produto.querySelector("h3");
+        const botaoFavorito = produto.querySelector(
+            'button[onclick^="adicionarFavorito"], .botao-favorito-produto'
+        );
+
+        if (!preco || !botaoFavorito) {
+            return;
+        }
+
+        const linha = document.createElement("div");
+        linha.className = "linha-preco-favorito";
+
+        preco.parentNode.insertBefore(linha, preco);
+        linha.appendChild(preco);
+        linha.appendChild(botaoFavorito);
+
+    });
+
+}
+
+
+// Deixa os produtos das lojas parceiras com o mesmo card da página inicial.
+function padronizarCardsLojasParceiras() {
+
+    const cards = document.querySelectorAll(
+        ".produto-zara, .produto-farm, .produto-amaro, .produto-levis"
+    );
+
+    cards.forEach(function(card) {
+
+        card.classList.add("produto", "produto-parceira");
+
+        const tituloAntigo = card.querySelector("h3");
+        let marca = card.querySelector(".marca-produto");
+        const precoAntigo = card.querySelector(
+            ".preco-zara, .preco-farm, .preco-amaro, .preco-levis"
+        );
+        const botaoCarrinho = card.querySelector("button");
+        const labelTamanho = card.querySelector("label");
+        const selectTamanho = card.querySelector("select");
+
+        if (!tituloAntigo || !precoAntigo || !botaoCarrinho) {
+            return;
+        }
+
+        const nomeProduto = tituloAntigo.textContent.trim();
+        const nomeMarca = marca
+            ? marca.textContent.trim()
+            : document.title.split("|")[0].trim();
+        const nomeCompleto = nomeProduto + " " + nomeMarca;
+        const preco = Number(
+            precoAntigo.textContent
+                .replace("R$", "")
+                .replace(".", "")
+                .replace(",", ".")
+                .trim()
+        );
+
+        const titulo = document.createElement("h2");
+        titulo.textContent = nomeProduto;
+        tituloAntigo.replaceWith(titulo);
+
+        if (!marca) {
+            marca = document.createElement("p");
+            marca.className = "marca-produto";
+            marca.textContent = nomeMarca;
+            titulo.insertAdjacentElement("afterend", marca);
+        }
+
+        const descricao = document.createElement("p");
+        descricao.textContent = "Peça selecionada da coleção " + nomeMarca + ".";
+        marca.insertAdjacentElement("afterend", descricao);
+
+        const precoNovo = document.createElement("h3");
+        precoNovo.textContent = precoAntigo.textContent.trim();
+        precoAntigo.replaceWith(precoNovo);
+
+        if (labelTamanho) {
+            labelTamanho.remove();
+        }
+
+        if (selectTamanho) {
+            selectTamanho.remove();
+        }
+
+        botaoCarrinho.className = "botao-carrinho-produto";
+        botaoCarrinho.textContent = "Adicionar ao Carrinho";
+        botaoCarrinho.removeAttribute("onclick");
+        botaoCarrinho.addEventListener("click", function() {
+            adicionarCarrinho(nomeCompleto, preco, null, botaoCarrinho);
+        });
+
+        const botaoFavorito = document.createElement("button");
+        botaoFavorito.type = "button";
+        botaoFavorito.className = "botao-favorito-produto";
+        botaoFavorito.textContent = "Favorito";
+        botaoFavorito.addEventListener("click", function() {
+            adicionarFavorito(nomeCompleto);
+        });
+
+        card.appendChild(botaoFavorito);
+
+    });
+
+}
+
+
+// Cria a navegação horizontal dos produtos da página principal.
+function criarCarrosseisProdutos() {
+
+    const secoes = document.querySelectorAll("#vestidos, #saias");
+
+    secoes.forEach(function(secao) {
+
+        const cards = secao.querySelector(".cards");
+
+        if (!cards || cards.parentElement.classList.contains("estrutura-carrossel-produtos")) {
+            return;
+        }
+
+        const estrutura = document.createElement("div");
+        estrutura.className = "estrutura-carrossel-produtos";
+
+        const botaoAnterior = document.createElement("button");
+        botaoAnterior.type = "button";
+        botaoAnterior.className = "seta-produtos seta-produtos-anterior";
+        botaoAnterior.textContent = "‹";
+        botaoAnterior.setAttribute("aria-label", "Mostrar produtos anteriores");
+
+        const botaoProximo = document.createElement("button");
+        botaoProximo.type = "button";
+        botaoProximo.className = "seta-produtos seta-produtos-proximo";
+        botaoProximo.textContent = "›";
+        botaoProximo.setAttribute("aria-label", "Mostrar próximos produtos");
+
+        cards.parentNode.insertBefore(estrutura, cards);
+        estrutura.appendChild(botaoAnterior);
+        estrutura.appendChild(cards);
+        estrutura.appendChild(botaoProximo);
+        cards.classList.add("carrossel-produtos");
+
+        botaoAnterior.addEventListener("click", function() {
+            moverCarrosselProdutos(cards, -1);
+        });
+
+        botaoProximo.addEventListener("click", function() {
+            moverCarrosselProdutos(cards, 1);
+        });
+
+    });
+
+}
+
+
+function moverCarrosselProdutos(carrossel, direcao) {
+
+    const primeiroCard = carrossel.querySelector(".produto");
+
+    if (!primeiroCard) {
+        return;
+    }
+
+    const distancia = primeiroCard.offsetWidth + 30;
+
+    carrossel.scrollBy({
+        left: distancia * direcao,
+        behavior: "smooth"
+    });
+
+}
+
+
 // =====================================
 // FINALIZAR COMPRA
 // =====================================
@@ -698,63 +1126,42 @@ if (formularioCompra) {
             }
 
 
-            const pagamentoSelecionado =
-                document.querySelector(
-                    'input[name="pagamento"]:checked'
-                );
+            const dados = new FormData(formularioCompra);
 
-
-            if (!pagamentoSelecionado) {
-
-                alert(
-                    "Escolha uma forma de pagamento."
-                );
-
-                return;
-
-            }
-
-
-            let total = 0;
-
-
-            carrinho.forEach(function(produto) {
-
-                total +=
-                    Number(produto.preco) *
-                    Number(produto.quantidade);
-
-            });
-
-
-            const totalFormatado =
-                total
-                    .toFixed(2)
-                    .replace(".", ",");
-
-
-            alert(
-
-                "Compra finalizada com sucesso!\n\n" +
-
-                "Forma de pagamento: " +
-                pagamentoSelecionado.value +
-
-                "\n\n" +
-
-                "Total da compra: R$ " +
-                totalFormatado
-
+            // O carrinho é transformado em texto JSON para ser enviado ao PHP.
+            dados.append(
+                "carrinho",
+                JSON.stringify(carrinho)
             );
 
+            fetch("backend/finalizar_pedido.php", {
+                method: "POST",
+                body: dados
+            })
+            .then(function(resposta) {
+                return resposta.json();
+            })
+            .then(function(resultado) {
+                if (!resultado.sucesso) {
+                    alert(resultado.mensagem);
+                    return;
+                }
 
-            carrinho = [];
+                alert(
+                    resultado.mensagem +
+                    "\nNúmero do pedido: " +
+                    resultado.pedido_id
+                );
 
-            salvarCarrinho();
+                carrinho = [];
+                salvarCarrinho();
+                formularioCompra.reset();
 
-            atualizarCarrinho();
-
-            formularioCompra.reset();
+                window.location.href = "index.html";
+            })
+            .catch(function() {
+                alert("Não foi possível finalizar o pedido.");
+            });
 
         }
     );
@@ -810,20 +1217,73 @@ if (formularioNewsletter) {
 
             event.preventDefault();
 
-
             const campoEmail =
                 formularioNewsletter.querySelector(
                     'input[type="email"]'
                 );
 
+            const dados = new FormData();
+            dados.append("email", campoEmail.value);
 
-            alert(
-                "E-mail cadastrado com sucesso: " +
-                campoEmail.value
-            );
+            fetch("backend/newsletter.php", {
+                method: "POST",
+                body: dados
+            })
+            .then(function(resposta) {
+                return resposta.json();
+            })
+            .then(function(resultado) {
+                alert(resultado.mensagem);
+
+                if (resultado.sucesso) {
+                    formularioNewsletter.reset();
+                }
+            })
+            .catch(function() {
+                alert("Não foi possível cadastrar o e-mail.");
+            });
+
+        }
+    );
+
+}
 
 
-            formularioNewsletter.reset();
+// =====================================
+// FORMULÁRIO DE CONTATO
+// =====================================
+
+const formularioContato =
+    document.getElementById("formContato");
+
+
+if (formularioContato) {
+
+    formularioContato.addEventListener(
+        "submit",
+        function(event) {
+
+            event.preventDefault();
+
+            const dados = new FormData(formularioContato);
+
+            fetch("backend/contato.php", {
+                method: "POST",
+                body: dados
+            })
+            .then(function(resposta) {
+                return resposta.json();
+            })
+            .then(function(resultado) {
+                alert(resultado.mensagem);
+
+                if (resultado.sucesso) {
+                    formularioContato.reset();
+                }
+            })
+            .catch(function() {
+                alert("Não foi possível enviar a mensagem.");
+            });
 
         }
     );
@@ -926,7 +1386,7 @@ function adicionarTamanhosProdutos() {
 
         const botaoCarrinho =
             produto.querySelector(
-                'button[onclick*="adicionarCarrinho"]'
+                'button[onclick*="adicionarCarrinho"], .botao-carrinho-produto'
             );
 
 
@@ -1320,8 +1780,53 @@ const campoPesquisa =
     document.getElementById("campoPesquisa");
 
 
-const btnPesquisar =
-    document.getElementById("btnPesquisar");
+function normalizarTexto(texto) {
+
+    return texto
+        .toLowerCase()
+        .normalize("NFD")
+        .replace(/[\u0300-\u036f]/g, "")
+        .trim();
+
+}
+
+
+function filtrarProdutos() {
+
+    const produtos = document.querySelectorAll(
+        "#vestidos .produto, #saias .produto"
+    );
+
+    const pesquisa = normalizarTexto(campoPesquisa.value);
+    const termos = pesquisa.split(/\s+/).filter(Boolean);
+    let primeiroResultado = null;
+
+    produtos.forEach(function(produto) {
+
+        const secao = produto.closest("section");
+        const categoria = secao && secao.id === "saias"
+            ? "saia saias"
+            : "vestido vestidos";
+
+        const textoProduto = normalizarTexto(
+            produto.innerText + " " + categoria
+        );
+
+        const corresponde = termos.every(function(termo) {
+            return textoProduto.includes(termo);
+        });
+
+        produto.hidden = !corresponde;
+
+        if (corresponde && !primeiroResultado) {
+            primeiroResultado = produto;
+        }
+
+    });
+
+    return primeiroResultado;
+
+}
 
 
 function realizarPesquisa() {
@@ -1330,104 +1835,22 @@ function realizarPesquisa() {
         return;
     }
 
+    const primeiroResultado = filtrarProdutos();
 
-    const pesquisa =
-        campoPesquisa.value
-            .toLowerCase()
-            .trim();
+    if (primeiroResultado && campoPesquisa.value.trim() !== "") {
 
-
-    const produtos =
-        document.querySelectorAll(
-            "#vestidos .produto, #saias .produto"
-        );
-
-
-    if (pesquisa === "") {
-
-        produtos.forEach(function(produto) {
-
-            produto.style.display = "";
-
+        primeiroResultado.scrollIntoView({
+            behavior: "smooth",
+            block: "center"
         });
 
-        return;
-
-    }
-
-
-    let encontrou =
-        false;
-
-
-    produtos.forEach(function(produto) {
-
-        const nome =
-            produto.innerText.toLowerCase();
-
-
-        if (nome.includes(pesquisa)) {
-
-            produto.style.display = "";
-
-            encontrou = true;
-
-        } else {
-
-            produto.style.display = "none";
-
-        }
-
-    });
-
-
-    if (encontrou) {
-
-        const primeiroResultado =
-            Array.from(produtos).find(function(produto) {
-
-                return produto.style.display !== "none";
-
-            });
-
-
-        if (primeiroResultado) {
-
-            primeiroResultado.scrollIntoView({
-                behavior: "smooth",
-                block: "center"
-            });
-
-        }
-
-    } else {
-
-        alert(
-            "Nenhuma roupa encontrada para: " +
-            campoPesquisa.value
-        );
-
     }
 
 }
 
 
 // =====================================
-// BOTÃO DE PESQUISA
-// =====================================
-
-if (btnPesquisar) {
-
-    btnPesquisar.addEventListener(
-        "click",
-        realizarPesquisa
-    );
-
-}
-
-
-// =====================================
-// CTRL + ENTER NA PESQUISA
+// ENTER NA PESQUISA
 // =====================================
 
 if (campoPesquisa) {
@@ -1436,10 +1859,7 @@ if (campoPesquisa) {
         "keydown",
         function(event) {
 
-            if (
-                event.key === "Enter" &&
-                event.ctrlKey
-            ) {
+            if (event.key === "Enter") {
 
                 event.preventDefault();
 
@@ -1463,30 +1883,87 @@ if (campoPesquisa) {
         "input",
         function() {
 
-            const pesquisa =
-                campoPesquisa.value
-                    .toLowerCase()
-                    .trim();
-
-
-            if (pesquisa === "") {
-
-                const produtos =
-                    document.querySelectorAll(
-                        "#vestidos .produto, #saias .produto"
-                    );
-
-
-                produtos.forEach(function(produto) {
-
-                    produto.style.display = "";
-
-                });
-
-            }
+            filtrarProdutos();
 
         }
     );
+
+}
+
+
+// =====================================
+// CARROSSEL DA PÁGINA INICIAL
+// =====================================
+
+let slideAtual = 0;
+let tempoCarrossel = null;
+
+
+function mostrarSlide(indice) {
+
+    const slides = document.querySelectorAll(".slide-carrossel");
+    const indicadores = document.querySelectorAll(
+        ".indicadores-carrossel button"
+    );
+
+    if (slides.length === 0) {
+        return;
+    }
+
+    if (indice >= slides.length) {
+        slideAtual = 0;
+    } else if (indice < 0) {
+        slideAtual = slides.length - 1;
+    } else {
+        slideAtual = indice;
+    }
+
+    slides.forEach(function(slide) {
+        slide.classList.remove("slide-ativo");
+    });
+
+    indicadores.forEach(function(indicador) {
+        indicador.classList.remove("indicador-ativo");
+    });
+
+    slides[slideAtual].classList.add("slide-ativo");
+
+    if (indicadores[slideAtual]) {
+        indicadores[slideAtual].classList.add("indicador-ativo");
+    }
+
+}
+
+
+function iniciarCarrossel() {
+
+    const slides = document.querySelectorAll(".slide-carrossel");
+
+    if (slides.length < 2) {
+        return;
+    }
+
+    clearInterval(tempoCarrossel);
+
+    tempoCarrossel = setInterval(function() {
+        mostrarSlide(slideAtual + 1);
+    }, 5000);
+
+}
+
+
+function mudarSlide(direcao) {
+
+    mostrarSlide(slideAtual + direcao);
+    iniciarCarrossel();
+
+}
+
+
+function irParaSlide(indice) {
+
+    mostrarSlide(indice);
+    iniciarCarrossel();
 
 }
 
@@ -1499,9 +1976,17 @@ document.addEventListener(
     "DOMContentLoaded",
     function() {
 
+        padronizarCardsLojasParceiras();
+
         adicionarTamanhosProdutos();
 
+        organizarPrecoEFavorito();
+
         atualizarCarrinho();
+
+        iniciarCarrossel();
+
+        criarCarrosseisProdutos();
 
     }
 );

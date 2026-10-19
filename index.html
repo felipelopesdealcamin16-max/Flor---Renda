@@ -14,7 +14,7 @@
 
     <title>Flor & Renda</title>
 
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="style.css?v=carrossel-produtos">
 
 </head>
 
@@ -26,11 +26,19 @@
 
 <script>
 
-    const usuarioLogado = localStorage.getItem("usuarioLogado");
-
-    if (usuarioLogado !== "true") {
-        window.location.href = "login.html";
-    }
+    fetch("backend/sessao.php")
+        .then(function(resposta) {
+            return resposta.json();
+        })
+        .then(function(sessao) {
+            if (!sessao.logado) {
+                localStorage.removeItem("usuarioLogado");
+                window.location.href = "login.html";
+            }
+        })
+        .catch(function() {
+            window.location.href = "login.html";
+        });
 
 </script>
 
@@ -98,13 +106,10 @@
 
 <header class="cabecalho">
 
-    <div class="logo">
-
-        <h2>
-            Flor & Renda
-        </h2>
-
-    </div>
+    <a href="index.html" class="logo">
+        <img src="imagens/logo.jpeg" alt="Logo Flor & Renda">
+        <h2>Flor & Renda</h2>
+    </a>
 
 
     <nav class="menu">
@@ -143,15 +148,9 @@
             <input
                 type="text"
                 id="campoPesquisa"
-                placeholder="Pesquisar roupa..."
+                placeholder="Buscar produto, marca ou cor..."
+                aria-label="Buscar produtos"
             >
-
-            <button
-                type="button"
-                id="btnPesquisar"
-            >
-                🔍
-            </button>
 
         </div>
 
@@ -162,6 +161,8 @@
         type="button"
         class="coracao"
         onclick="mostrarFavoritos()"
+        aria-label="Abrir favoritos"
+        title="Favoritos"
     >
         Favoritos
     </button>
@@ -173,6 +174,14 @@
     >
         Carrinho
     </a>
+
+    <button
+        type="button"
+        class="coracao"
+        onclick="sair()"
+    >
+        Sair
+    </button>
 
 </header>
 
@@ -188,23 +197,104 @@
      BANNER
 ================================== -->
 
-<section id="inicio">
+<section id="inicio" class="carrossel-principal">
 
-    <div class="banner">
+    <div class="slide-carrossel slide-ativo slide-vestidos">
 
-        <img
-            src="logo.jpeg"
-            class="logoBanner"
-            alt="Flor & Renda"
-        >
+        <div class="banner">
 
-        <button
-            type="button"
-            onclick="document.getElementById('vestidos').scrollIntoView({behavior:'smooth'})"
-        >
-            Comprar Agora
-        </button>
+            <span class="destaque-banner">Moda feminina</span>
 
+            <h1>Leveza e estilo para todos os momentos</h1>
+
+            <p>
+                Vestidos escolhidos para deixar seu visual
+                ainda mais especial.
+            </p>
+
+            <button
+                type="button"
+                onclick="document.getElementById('vestidos').scrollIntoView({behavior:'smooth'})"
+            >
+                Ver Vestidos
+            </button>
+
+        </div>
+
+    </div>
+
+
+    <div class="slide-carrossel slide-saias">
+
+        <div class="banner">
+
+            <span class="destaque-banner">Nova coleção</span>
+
+            <h1>Saias leves, modernas e cheias de cor</h1>
+
+            <p>
+                Modelos florais e versáteis para diferentes ocasiões.
+            </p>
+
+            <button
+                type="button"
+                onclick="document.getElementById('saias').scrollIntoView({behavior:'smooth'})"
+            >
+                Ver Saias
+            </button>
+
+        </div>
+
+    </div>
+
+
+    <div class="slide-carrossel slide-parceiras">
+
+        <div class="banner">
+
+            <span class="destaque-banner">Flor & Renda</span>
+
+            <h1>Suas marcas favoritas em um só lugar</h1>
+
+            <p>
+                Conheça as coleções das nossas lojas parceiras.
+            </p>
+
+            <button
+                type="button"
+                onclick="document.querySelector('.lojas-parceiras').scrollIntoView({behavior:'smooth'})"
+            >
+                Ver Lojas
+            </button>
+
+        </div>
+
+    </div>
+
+
+    <button
+        type="button"
+        class="seta-carrossel seta-anterior"
+        onclick="mudarSlide(-1)"
+        aria-label="Slide anterior"
+    >
+        ‹
+    </button>
+
+    <button
+        type="button"
+        class="seta-carrossel seta-proxima"
+        onclick="mudarSlide(1)"
+        aria-label="Próximo slide"
+    >
+        ›
+    </button>
+
+
+    <div class="indicadores-carrossel">
+        <button type="button" class="indicador-ativo" onclick="irParaSlide(0)" aria-label="Mostrar slide 1"></button>
+        <button type="button" onclick="irParaSlide(1)" aria-label="Mostrar slide 2"></button>
+        <button type="button" onclick="irParaSlide(2)" aria-label="Mostrar slide 3"></button>
     </div>
 
 </section>
@@ -238,7 +328,7 @@
                 <div class="logo-loja">
 
                     <img
-                        src="zara.webp"
+                        src="imagens/zara.webp"
                         alt="Logo ZARA"
                     >
 
@@ -258,7 +348,7 @@
                 <div class="logo-loja">
 
                     <img
-                        src="farm.jpg"
+                        src="imagens/farm.jpg"
                         alt="Logo FARM"
                     >
 
@@ -273,12 +363,12 @@
 
         <div class="loja">
 
-            <a href="LEVI'S.html">
+            <a href="levis.html">
 
                 <div class="logo-loja">
 
                     <img
-                        src="leviss.jpg"
+                        src="imagens/leviss.jpg"
                         alt="Logo LEVI'S"
                     >
 
@@ -298,7 +388,7 @@
                 <div class="logo-loja">
 
                     <img
-                        src="amaro.png"
+                        src="imagens/amaro.png"
                         alt="Logo AMARO"
                     >
 
@@ -318,7 +408,7 @@
                 <div class="logo-loja">
 
                     <img
-                        src="shoulder.webp"
+                        src="imagens/shoulder.webp"
                         alt="Logo SHOULDER"
                     >
 
@@ -360,7 +450,7 @@
         <div class="produto">
 
             <img
-                src="vestidoll.jpg"
+                src="imagens/vestidoll.jpg"
                 alt="Categoria de vestidos"
             >
 
@@ -385,7 +475,7 @@
         <div class="produto">
 
             <img
-                src="saia azul.jpeg"
+                src="imagens/saia azul.jpeg"
                 alt="Categoria de saias"
             >
 
@@ -410,7 +500,7 @@
         <div class="produto">
 
             <img
-                src="vestido flor.webp"
+                src="imagens/vestido flor.webp"
                 alt="Coleção floral"
             >
 
@@ -428,6 +518,83 @@
             >
                 Ver Coleção
             </button>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- =================================
+     NOVA COLEÇÃO DE VESTIDOS
+================================== -->
+
+<section id="nova-colecao">
+
+    <div class="titulo-colecao">
+
+        <span>
+            FLOR & RENDA
+        </span>
+
+        <h1>
+            Nova Coleção de Vestidos
+        </h1>
+
+        <p>
+            Leveza, flores e cores para os seus melhores momentos.
+        </p>
+
+    </div>
+
+
+    <div class="colecao-imagens">
+
+        <div class="colecao-card">
+
+            <img
+                src="imagens/fff43.jpg"
+                alt="Detalhes do vestido floral"
+            >
+
+            <div class="colecao-texto">
+
+                <span>
+                    NOVO
+                </span>
+
+                <h2>
+                    Detalhes que encantam
+                </h2>
+
+            </div>
+
+        </div>
+
+
+        <div class="colecao-card">
+
+            <img
+                src="imagens/flortt.webp"
+                alt="Vestido floral amarelo"
+            >
+
+            <div class="colecao-texto">
+
+                <span>
+                    NOVA COLEÇÃO
+                </span>
+
+                <h2>
+                    Flores da Estação
+                </h2>
+
+                <a href="#vestidos">
+                    Ver Vestidos
+                </a>
+
+            </div>
 
         </div>
 
@@ -461,7 +628,7 @@
         <div class="produto">
 
             <img
-                src="vestidocurto1.jpg"
+                src="imagens/vestidocurto1.jpg"
                 alt="Vestido Curto Floral"
             >
 
@@ -484,7 +651,7 @@
 
             <button
                 type="button"
-                onclick="adicionarCarrinho('Vestido Curto Floral FARM', 159.90)"
+                onclick="adicionarCarrinho('Vestido Curto Floral FARM', 159.90, null, this)"
             >
                 Adicionar ao Carrinho
             </button>
@@ -502,7 +669,7 @@
         <div class="produto">
 
             <img
-                src="vestidolongofarm.webp"
+                src="imagens/vestidolongofarm.webp"
                 alt="Vestido Longo Floral"
             >
 
@@ -525,7 +692,7 @@
 
             <button
                 type="button"
-                onclick="adicionarCarrinho('Vestido Longo Floral FARM', 189.90)"
+                onclick="adicionarCarrinho('Vestido Longo Floral FARM', 189.90, null, this)"
             >
                 Adicionar ao Carrinho
             </button>
@@ -543,7 +710,7 @@
         <div class="produto">
 
             <img
-                src="amarelo flor.webp"
+                src="imagens/amarelo flor.webp"
                 alt="Vestido Longo Azul"
             >
 
@@ -566,7 +733,7 @@
 
             <button
                 type="button"
-                onclick="adicionarCarrinho('Vestido Longo Azul ZARA', 259.90)"
+                onclick="adicionarCarrinho('Vestido Longo Azul ZARA', 259.90, null, this)"
             >
                 Adicionar ao Carrinho
             </button>
@@ -584,7 +751,7 @@
         <div class="produto">
 
             <img
-                src="branco flor.webp"
+                src="imagens/branco flor.webp"
                 alt="Vestido Longo Elegante"
             >
 
@@ -607,7 +774,7 @@
 
             <button
                 type="button"
-                onclick="adicionarCarrinho('Vestido Longo Elegante AMARO', 239.90)"
+                onclick="adicionarCarrinho('Vestido Longo Elegante AMARO', 239.90, null, this)"
             >
                 Adicionar ao Carrinho
             </button>
@@ -625,7 +792,7 @@
         <div class="produto">
 
             <img
-                src="vestido verde.webp"
+                src="imagens/vestido verde.webp"
                 alt="Vestido Longo Tropical"
             >
 
@@ -648,7 +815,7 @@
 
             <button
                 type="button"
-                onclick="adicionarCarrinho('Vestido Longo Tropical SHOULDER', 249.90)"
+                onclick="adicionarCarrinho('Vestido Longo Tropical SHOULDER', 249.90, null, this)"
             >
                 Adicionar ao Carrinho
             </button>
@@ -666,7 +833,7 @@
         <div class="produto">
 
             <img
-                src="vestido flor.webp"
+                src="imagens/vestido flor.webp"
                 alt="Vestido Floral Azul"
             >
 
@@ -689,7 +856,7 @@
 
             <button
                 type="button"
-                onclick="adicionarCarrinho('Vestido Floral Azul FARM', 269.90)"
+                onclick="adicionarCarrinho('Vestido Floral Azul FARM', 269.90, null, this)"
             >
                 Adicionar ao Carrinho
             </button>
@@ -707,7 +874,7 @@
         <div class="produto">
 
             <img
-                src="vestidofloralverde.jpg"
+                src="imagens/vestidofloralverde.jpg"
                 alt="Vestido Curto Floral Verde"
             >
 
@@ -730,7 +897,7 @@
 
             <button
                 type="button"
-                onclick="adicionarCarrinho('Vestido Curto Floral Verde ZARA', 199.90)"
+                onclick="adicionarCarrinho('Vestido Curto Floral Verde ZARA', 199.90, null, this)"
             >
                 Adicionar ao Carrinho
             </button>
@@ -748,7 +915,7 @@
         <div class="produto">
 
             <img
-                src="images.jpg"
+                src="imagens/images.jpg"
                 alt="Vestido Curto Floral Claro"
             >
 
@@ -771,7 +938,7 @@
 
             <button
                 type="button"
-                onclick="adicionarCarrinho('Vestido Curto Floral Claro AMARO', 219.90)"
+                onclick="adicionarCarrinho('Vestido Curto Floral Claro AMARO', 219.90, null, this)"
             >
                 Adicionar ao Carrinho
             </button>
@@ -791,19 +958,15 @@
 
 
 <!-- =================================
-     NOVA COLEÇÃO
+     NOVA COLEÇÃO DE SAIAS
 ================================== -->
 
-<section id="nova-colecao">
+<section id="nova-colecao-saias">
 
     <div class="titulo-colecao">
 
-        <span>
-            FLOR & RENDA
-        </span>
-
         <h1>
-            Nova Coleção
+            Nova Coleção de Saias
         </h1>
 
         <p>
@@ -818,30 +981,8 @@
         <div class="colecao-card">
 
             <img
-                src="fff43.jpg"
-                alt="Detalhes do vestido floral"
-            >
-
-            <div class="colecao-texto">
-
-                <span>
-                    NOVO
-                </span>
-
-                <h2>
-                    Detalhes que encantam
-                </h2>
-
-            </div>
-
-        </div>
-
-
-        <div class="colecao-card">
-
-            <img
-                src="flortt.webp"
-                alt="Vestido floral amarelo"
+                src="imagens/346253_52753_1-SAIA-FLORESTA-DE-PASSARINHO.jpg"
+                alt="Saia tropical verde"
             >
 
             <div class="colecao-texto">
@@ -851,11 +992,37 @@
                 </span>
 
                 <h2>
-                    Flores da Estação
+                    Saia Tropical Verde
                 </h2>
 
-                <a href="#vestidos">
-                    Ver Vestidos
+                <a href="#saias">
+                    Ver Saias
+                </a>
+
+            </div>
+
+        </div>
+
+
+        <div class="colecao-card">
+
+            <img
+                src="imagens/saia flor amarela.jpg"
+                alt="Saia longa floral amarela"
+            >
+
+            <div class="colecao-texto">
+
+                <span>
+                    NOVA COLEÇÃO
+                </span>
+
+                <h2>
+                    Saia Longa Floral Amarela
+                </h2>
+
+                <a href="#saias">
+                    Ver Saias
                 </a>
 
             </div>
@@ -892,7 +1059,7 @@
         <div class="produto">
 
             <img
-                src="saia.jpg"
+                src="imagens/saia.jpg"
                 alt="Saia Floral Rosa"
             >
 
@@ -915,7 +1082,7 @@
 
             <button
                 type="button"
-                onclick="adicionarCarrinho('Saia Floral Rosa ZARA', 129.90)"
+                onclick="adicionarCarrinho('Saia Floral Rosa ZARA', 129.90, null, this)"
             >
                 Adicionar ao Carrinho
             </button>
@@ -933,7 +1100,7 @@
         <div class="produto">
 
             <img
-                src="saia.1.webp"
+                src="imagens/saia.1.webp"
                 alt="Saia Floral Clara"
             >
 
@@ -956,7 +1123,7 @@
 
             <button
                 type="button"
-                onclick="adicionarCarrinho('Saia Floral Clara FARM', 139.90)"
+                onclick="adicionarCarrinho('Saia Floral Clara FARM', 139.90, null, this)"
             >
                 Adicionar ao Carrinho
             </button>
@@ -974,7 +1141,7 @@
         <div class="produto">
 
             <img
-                src="saia azul.jpeg"
+                src="imagens/saia azul.jpeg"
                 alt="Saia Azul"
             >
 
@@ -997,7 +1164,7 @@
 
             <button
                 type="button"
-                onclick="adicionarCarrinho('Saia Azul AMARO', 149.90)"
+                onclick="adicionarCarrinho('Saia Azul AMARO', 149.90, null, this)"
             >
                 Adicionar ao Carrinho
             </button>
@@ -1015,7 +1182,7 @@
         <div class="produto">
 
             <img
-                src="saia preta.webp"
+                src="imagens/saia preta.webp"
                 alt="Saia Preta"
             >
 
@@ -1038,7 +1205,7 @@
 
             <button
                 type="button"
-                onclick="adicionarCarrinho('Saia Preta SHOULDER', 159.90)"
+                onclick="adicionarCarrinho('Saia Preta SHOULDER', 159.90, null, this)"
             >
                 Adicionar ao Carrinho
             </button>
@@ -1056,7 +1223,7 @@
         <div class="produto">
 
             <img
-                src="saialirio.webp"
+                src="imagens/saialirio.webp"
                 alt="Saia Tropical Clara"
             >
 
@@ -1079,7 +1246,7 @@
 
             <button
                 type="button"
-                onclick="adicionarCarrinho('Saia Tropical Clara LEVIS', 149.90)"
+                onclick="adicionarCarrinho('Saia Tropical Clara LEVIS', 149.90, null, this)"
             >
                 Adicionar ao Carrinho
             </button>
@@ -1097,7 +1264,7 @@
         <div class="produto">
 
             <img
-                src="saia1.jpg"
+                src="imagens/saia1.jpg"
                 alt="Saia Floral Azul"
             >
 
@@ -1120,7 +1287,7 @@
 
             <button
                 type="button"
-                onclick="adicionarCarrinho('Saia Floral Azul FARM', 159.90)"
+                onclick="adicionarCarrinho('Saia Floral Azul FARM', 159.90, null, this)"
             >
                 Adicionar ao Carrinho
             </button>
@@ -1138,7 +1305,7 @@
         <div class="produto">
 
             <img
-                src="346535_52692_1-SAIA-CURTA-BALONE-MOLETOM-TROPICALZINHO.webp"
+                src="imagens/346535_52692_1-SAIA-CURTA-BALONE-MOLETOM-TROPICALZINHO.webp"
                 alt="Saia Tropical Colorida"
             >
 
@@ -1161,7 +1328,7 @@
 
             <button
                 type="button"
-                onclick="adicionarCarrinho('Saia Tropical Colorida SHOULDER', 159.90)"
+                onclick="adicionarCarrinho('Saia Tropical Colorida SHOULDER', 159.90, null, this)"
             >
                 Adicionar ao Carrinho
             </button>
@@ -1179,7 +1346,7 @@
         <div class="produto">
 
             <img
-                src="saiafloral2.webp"
+                src="imagens/saiafloral2.webp"
                 alt="Saia Floral Michelle"
             >
 
@@ -1202,7 +1369,7 @@
 
             <button
                 type="button"
-                onclick="adicionarCarrinho('Saia Floral Michelle ZARA', 169.90)"
+                onclick="adicionarCarrinho('Saia Floral Michelle ZARA', 169.90, null, this)"
             >
                 Adicionar ao Carrinho
             </button>
@@ -1213,83 +1380,6 @@
             >
                 Favorito
             </button>
-
-        </div>
-
-    </div>
-
-</section>
-
-
-<!-- =================================
-     NOVA COLEÇÃO DE SAIAS
-================================== -->
-
-<section id="nova-colecao-saias">
-
-    <div class="titulo-colecao">
-
-        <h1>
-            Nova Coleção de Saias
-        </h1>
-
-        <p>
-            Leveza, flores e cores para os seus melhores momentos.
-        </p>
-
-    </div>
-
-
-    <div class="colecao-imagens">
-
-        <div class="colecao-card">
-
-            <img
-                src="saia flor amarela.jpg"
-                alt="Saia Floral Tropical"
-            >
-
-            <div class="colecao-texto">
-
-                <span>
-                    NOVA COLEÇÃO
-                </span>
-
-                <h2>
-                    Saia Floral Tropical
-                </h2>
-
-                <a href="#saias">
-                    Ver Saias
-                </a>
-
-            </div>
-
-        </div>
-
-
-        <div class="colecao-card">
-
-            <img
-                src="floreste.jpg"
-                alt="Saia Longa Floral Amarela"
-            >
-
-            <div class="colecao-texto">
-
-                <span>
-                    NOVA COLEÇÃO
-                </span>
-
-                <h2>
-                    Saia Longa Floral Amarela
-                </h2>
-
-                <a href="#saias">
-                    Ver Saias
-                </a>
-
-            </div>
 
         </div>
 
@@ -1319,7 +1409,9 @@
 
     <div class="cards">
 
-        <div class="produto">
+        <div class="produto card-promocao">
+
+            <span class="tag-promocao">Até 30% OFF</span>
 
             <h2>
                 Vestidos
@@ -1332,7 +1424,9 @@
         </div>
 
 
-        <div class="produto">
+        <div class="produto card-promocao">
+
+            <span class="tag-promocao">A partir de R$ 99,90</span>
 
             <h2>
                 Saias
@@ -1345,7 +1439,9 @@
         </div>
 
 
-        <div class="produto">
+        <div class="produto card-promocao">
+
+            <span class="tag-promocao">Economize na entrega</span>
 
             <h2>
                 Frete Grátis
@@ -1377,7 +1473,7 @@
     </div>
 
 
-    <div class="sobre-texto">
+    <div class="sobre-texto sobre-destaque">
 
         <p>
             A Flor & Renda nasceu em Barretos com o objetivo
@@ -1411,37 +1507,31 @@
     </div>
 
 
-    <div class="sobre-texto">
+    <div class="grade-informacoes">
 
-        <h2>
-            Como funcionam as trocas?
-        </h2>
+        <article class="info-card">
+            <h2>Como funcionam as trocas?</h2>
+            <p>
+                Entre em contato com nossa equipe informando
+                o produto e o motivo da solicitação.
+            </p>
+        </article>
 
-        <p>
-            Caso seja necessário realizar uma troca,
-            entre em contato com nossa equipe informando
-            o produto e o motivo da solicitação.
-        </p>
+        <article class="info-card">
+            <h2>Condições para troca</h2>
+            <p>
+                A peça deve estar sem sinais de uso,
+                em boas condições e com as etiquetas originais.
+            </p>
+        </article>
 
-
-        <h2>
-            Condições para troca
-        </h2>
-
-        <p>
-            A peça deve estar sem sinais de uso,
-            em boas condições e com as etiquetas originais.
-        </p>
-
-
-        <h2>
-            Devoluções
-        </h2>
-
-        <p>
-            Para solicitar uma devolução, entre em contato
-            com nossa equipe para receber as orientações necessárias.
-        </p>
+        <article class="info-card">
+            <h2>Devoluções</h2>
+            <p>
+                Fale com nossa equipe para receber
+                as orientações necessárias.
+            </p>
+        </article>
 
     </div>
 
@@ -1468,36 +1558,31 @@
     </div>
 
 
-    <div class="sobre-texto">
+    <div class="grade-informacoes">
 
-        <h2>
-            Uso das informações
-        </h2>
+        <article class="info-card">
+            <h2>Uso das informações</h2>
+            <p>
+                Os dados da compra são utilizados no atendimento,
+                pagamento e entrega dos pedidos.
+            </p>
+        </article>
 
-        <p>
-            Os dados fornecidos durante a compra são utilizados
-            para atendimento, pagamento e entrega dos pedidos.
-        </p>
+        <article class="info-card">
+            <h2>Proteção dos dados</h2>
+            <p>
+                Mantemos suas informações protegidas
+                e as utilizamos de forma responsável.
+            </p>
+        </article>
 
-
-        <h2>
-            Proteção dos dados
-        </h2>
-
-        <p>
-            Buscamos manter suas informações protegidas
-            e utilizá-las de forma responsável.
-        </p>
-
-
-        <h2>
-            Contato
-        </h2>
-
-        <p>
-            Em caso de dúvidas sobre seus dados,
-            entre em contato com a Flor & Renda.
-        </p>
+        <article class="info-card">
+            <h2>Fale conosco</h2>
+            <p>
+                Em caso de dúvidas sobre seus dados,
+                entre em contato com a Flor & Renda.
+            </p>
+        </article>
 
     </div>
 
@@ -1523,32 +1608,29 @@
     </div>
 
 
-    <p>
-        <strong>E-mail:</strong>
-        contato@florerenda.com
-    </p>
+    <div class="contato-grid">
 
+        <div class="contato-card">
+            <strong>E-mail</strong>
+            <a href="mailto:contato@florerenda.com">contato@florerenda.com</a>
+        </div>
 
-    <p>
-        <strong>Telefone:</strong>
-        (17) 99999-9999
-    </p>
+        <div class="contato-card">
+            <strong>Telefone</strong>
+            <a href="tel:+5517999999999">(17) 99999-9999</a>
+        </div>
 
+        <div class="contato-card">
+            <strong>Localização</strong>
+            <span>Barretos - SP</span>
+        </div>
 
-    <p>
-        <strong>Localização:</strong>
-        Barretos - SP
-    </p>
+        <div class="contato-card">
+            <strong>Redes sociais</strong>
+            <span>Instagram</span>
+        </div>
 
-
-    <h2>
-        Redes Sociais
-    </h2>
-
-
-    <p>
-        Instagram
-    </p>
+    </div>
 
 </section>
 
@@ -1572,19 +1654,19 @@
     </div>
 
 
-    <p>
-        Barretos - São Paulo
-    </p>
+    <div class="localizacao-conteudo">
 
+        <p>Barretos - São Paulo</p>
 
-    <iframe
-        src="https://www.google.com/maps?q=Barretos,SP&output=embed"
-        width="100%"
-        height="350"
-        style="border:0; border-radius:10px;"
-        loading="lazy"
-        title="Mapa de Barretos">
-    </iframe>
+        <iframe
+            src="https://www.google.com/maps?q=Barretos,SP&output=embed"
+            width="100%"
+            height="350"
+            loading="lazy"
+            title="Mapa de Barretos">
+        </iframe>
+
+    </div>
 
 </section>
 
@@ -1756,7 +1838,7 @@
      JAVASCRIPT
 ================================== -->
 
-<script src="script.js"></script>
+<script src="script.js?v=carrossel-produtos"></script>
 
 </body>
 
